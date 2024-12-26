@@ -112,6 +112,10 @@ runner.Update();//更新
 runner.Dispose();//停止运行
 ~~~
 
+## WIKI
+
+[WIKI-Home](https://github.com/CCEMT/Emilia-BehaviorTree/wiki)
+
 ## 联系
 
 email：1076995595@qq.com  
