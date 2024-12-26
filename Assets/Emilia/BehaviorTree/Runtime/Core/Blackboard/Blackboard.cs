@@ -16,6 +16,9 @@ namespace Emilia.BehaviorTree
 
         private List<string> fireEvents = new List<string>();
 
+        /// <summary>
+        /// 不要通过这个设置变量，否则不会触发事件
+        /// </summary>
         public VariablesManage variablesManage => this._variablesManage;
 
         public Blackboard(Clock clock, VariablesManage variablesManage)
@@ -24,6 +27,9 @@ namespace Emilia.BehaviorTree
             this._variablesManage = variablesManage;
         }
 
+        /// <summary>
+        /// 设置变量
+        /// </summary>
         public void Set<T>(string key, T value)
         {
             bool isSet = this._variablesManage.SetValue(key, value);
@@ -32,6 +38,9 @@ namespace Emilia.BehaviorTree
             this.clock.AddTimer(Fire);
         }
 
+        /// <summary>
+        /// 获取变量
+        /// </summary>
         public T Get<T>(string key)
         {
             return this._variablesManage.GetValue<T>(key);
@@ -89,6 +98,9 @@ namespace Emilia.BehaviorTree
             removeEvents.Clear();
         }
 
+        /// <summary>
+        /// 订阅事件
+        /// </summary>
         public void Subscribe(string key, Action action)
         {
             EventInfo eventInfo = new EventInfo(key, action);
@@ -96,6 +108,9 @@ namespace Emilia.BehaviorTree
             addEvents.Add(eventInfo);
         }
 
+        /// <summary>
+        /// 取消订阅事件
+        /// </summary>
         public void Unsubscribe(string key, Action action)
         {
             EventInfo eventInfo = new EventInfo(key, action);

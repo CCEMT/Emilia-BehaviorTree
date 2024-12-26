@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Emilia.BehaviorTree
 {
@@ -18,6 +17,9 @@ namespace Emilia.BehaviorTree
         private List<Timer> removeTimerList = new List<Timer>();
         private List<Timer> addTimerList = new List<Timer>();
 
+        /// <summary>
+        /// 重新设置时间
+        /// </summary>
         public void Reset(ITimeInfo startTime)
         {
             time = startTime;
@@ -30,6 +32,9 @@ namespace Emilia.BehaviorTree
             addTimerList.Clear();
         }
 
+        /// <summary>
+        /// 添加下一次Update的事件
+        /// </summary>
         public Timer AddTimer(Action action)
         {
             return AddTimer(() => null, 0, action);
@@ -52,17 +57,23 @@ namespace Emilia.BehaviorTree
             timer.getTime = getTime;
             timer.loop = loop;
             timer.action = action;
-            
+
             addTimerList.Add(timer);
 
             return timer;
         }
 
+        /// <summary>
+        /// 移除一个Timer
+        /// </summary>
         public void RemoveTimer(Timer timer)
         {
             removeTimerList.Add(timer);
         }
 
+        /// <summary>
+        /// 添加一个Update事件
+        /// </summary>
         public void AddUpdateEvent(Action action)
         {
             if (updateEventList.Contains(action)) return;
@@ -70,12 +81,18 @@ namespace Emilia.BehaviorTree
             addUpdateEvent.Add(action);
         }
 
+        /// <summary>
+        /// 移除一个Update事件
+        /// </summary>
         public void RemoveUpdateEvent(Action action)
         {
             if (removeUpdateEvent.Contains(action)) return;
             removeUpdateEvent.Add(action);
         }
 
+        /// <summary>
+        /// 更新Clock
+        /// </summary>
         public void Update(ITimeInfo deltaTime)
         {
             time.Add(deltaTime);

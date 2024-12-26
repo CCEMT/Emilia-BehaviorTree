@@ -2,6 +2,9 @@
 
 namespace Emilia.BehaviorTree.Attributes
 {
+    /// <summary>
+    /// 菜单
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class BehaviorTreeMenuAttribute : Attribute
     {
