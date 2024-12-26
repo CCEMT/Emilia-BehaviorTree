@@ -59,6 +59,9 @@ namespace Emilia.BehaviorTree
         public IReadOnlyList<Node> nodes => this._nodes;
         public IReadOnlyDictionary<int, Node> nodeMap => this._nodeMap;
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
         public void Init(int uid, BehaviorTreeAsset asset, Clock clock, object owner = default, BehaviorTree parent = default)
         {
             this.uid = uid;
@@ -86,6 +89,9 @@ namespace Emilia.BehaviorTree
             isInited = true;
         }
 
+        /// <summary>
+        /// 开始
+        /// </summary>
         public void Start()
         {
             if (isInited == false) return;
@@ -93,17 +99,26 @@ namespace Emilia.BehaviorTree
             entryNode.Start();
         }
 
+        /// <summary>
+        /// 停止
+        /// </summary>
         public void Stop()
         {
             isActive = false;
             entryNode.Stop();
         }
 
+        /// <summary>
+        /// 子对象停止
+        /// </summary>
         public void ChildStop()
         {
             if (isActive) clock.AddTimer(Start);
         }
 
+        /// <summary>
+        /// 释放
+        /// </summary>
         public void Dispose()
         {
             int nodeCount = this._nodes.Count;

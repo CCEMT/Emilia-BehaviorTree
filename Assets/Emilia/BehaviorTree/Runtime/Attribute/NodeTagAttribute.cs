@@ -2,6 +2,9 @@
 
 namespace Emilia.BehaviorTree.Attributes
 {
+    /// <summary>
+    /// 节点Tag
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class NodeTagAttribute : Attribute
     {
