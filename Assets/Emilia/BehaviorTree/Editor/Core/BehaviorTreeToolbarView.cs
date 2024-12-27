@@ -12,14 +12,6 @@ namespace Emilia.BehaviorTree.Editor
 {
     public class BehaviorTreeToolbarView : ToolbarView
     {
-        private EditorBehaviorTreeAsset behaviorTreeAsset;
-
-        public override void Initialize(EditorGraphView graphView)
-        {
-            this.behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
-            base.Initialize(graphView);
-        }
-
         protected override void InitControls()
         {
             AddControl(new ButtonToolbarViewControl("参数", OnEditorParameter));
@@ -36,11 +28,13 @@ namespace Emilia.BehaviorTree.Editor
 
         private void OnEditorParameter()
         {
+            EditorBehaviorTreeAsset behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
+
             EditorParametersManage editorParametersManage = behaviorTreeAsset.editorParametersManage;
             if (editorParametersManage == null)
             {
                 editorParametersManage = behaviorTreeAsset.editorParametersManage = ScriptableObject.CreateInstance<EditorParametersManage>();
-                EditorAssetKit.SaveAssetIntoObject(editorParametersManage, this.behaviorTreeAsset);
+                EditorAssetKit.SaveAssetIntoObject(editorParametersManage, behaviorTreeAsset);
             }
 
             Selection.activeObject = editorParametersManage;
@@ -58,6 +52,8 @@ namespace Emilia.BehaviorTree.Editor
 
         private OdinMenu BuildRunnerMenu()
         {
+            EditorBehaviorTreeAsset behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
+
             OdinMenu odinMenu = new OdinMenu();
             odinMenu.defaultWidth = 300;
 
@@ -83,7 +79,10 @@ namespace Emilia.BehaviorTree.Editor
 
         private void OnSave()
         {
-            EditorBehaviorTreeUtility.DataBuild(this.behaviorTreeAsset, (report) => {
+            EditorBehaviorTreeAsset behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
+            EditorBehaviorTreeAsset rootBehaviorTreeAsset = behaviorTreeAsset.GetRootGraphAsset() as EditorBehaviorTreeAsset;
+
+            EditorBehaviorTreeUtility.DataBuild(rootBehaviorTreeAsset, (report) => {
                 if (report.result == BuildResult.Succeeded) graphView.window.ShowNotification(new GUIContent("保存成功"), 1.5f);
             });
         }

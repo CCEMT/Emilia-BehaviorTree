@@ -7,11 +7,11 @@ namespace Emilia.BehaviorTree.Editor
 {
     public class BehaviorTreeCreateNodeHandle : CreateNodeHandle<NodeAsset>
     {
-        protected object _userData;
+        protected object _nodeData;
         protected string _path;
         protected int _priority;
 
-        public override object userData => _userData;
+        public override object nodeData => this._nodeData;
         public override string path => _path;
         public override int priority => _priority;
 
@@ -26,7 +26,7 @@ namespace Emilia.BehaviorTree.Editor
                 this._priority = menuAttribute.priority;
             }
 
-            _userData = ReflectUtility.CreateInstance(this.value.nodeType);
+            this._nodeData = ReflectUtility.CreateInstance(this.value.nodeType);
         }
     }
 }
