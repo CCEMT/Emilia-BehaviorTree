@@ -36,10 +36,10 @@ namespace Emilia.BehaviorTree.Editor
             {
                 ICreateNodeHandle createNodeHandle = smartValue.createNodeMenu.createNodeHandleCacheList[i];
 
-                object userData = createNodeHandle.userData;
-                if (userData == null) continue;
+                object nodeData = createNodeHandle.nodeData;
+                if (nodeData == null) continue;
 
-                NodeTagAttribute[] nodeTagAttributes = userData.GetType().GetCustomAttributes<NodeTagAttribute>(true).ToArray();
+                NodeTagAttribute[] nodeTagAttributes = nodeData.GetType().GetCustomAttributes<NodeTagAttribute>(true).ToArray();
                 if (nodeTagAttributes.Any() == false)
                 {
                     smartValue.createNodeMenu.createNodeHandleCacheList.RemoveAt(i);
