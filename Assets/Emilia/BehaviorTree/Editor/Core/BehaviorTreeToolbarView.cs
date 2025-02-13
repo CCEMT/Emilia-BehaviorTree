@@ -80,7 +80,7 @@ namespace Emilia.BehaviorTree.Editor
         private void OnSave()
         {
             EditorBehaviorTreeAsset behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
-            EditorBehaviorTreeAsset rootBehaviorTreeAsset = behaviorTreeAsset.GetRootGraphAsset() as EditorBehaviorTreeAsset;
+            EditorBehaviorTreeAsset rootBehaviorTreeAsset = behaviorTreeAsset.GetRootAsset() as EditorBehaviorTreeAsset;
 
             EditorBehaviorTreeUtility.DataBuild(rootBehaviorTreeAsset, (report) => {
                 if (report.result == BuildResult.Succeeded) graphView.window.ShowNotification(new GUIContent("保存成功"), 1.5f);
