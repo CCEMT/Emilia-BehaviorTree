@@ -14,8 +14,6 @@ namespace Emilia.BehaviorTree.Editor
     [EditorNode(typeof(EditorRootNodeAsset))]
     public class EditorRootNodeView : EditorBehaviorTreeNodeView
     {
-        public override string defaultDisplayName => asset.title;
-
         public override List<EditorPortInfo> CollectStaticPortAssets()
         {
             List<EditorPortInfo> portInfos = new List<EditorPortInfo>();
