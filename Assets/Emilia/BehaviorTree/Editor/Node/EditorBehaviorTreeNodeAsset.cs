@@ -20,6 +20,19 @@ namespace Emilia.BehaviorTree.Editor
             get => userData;
             set => userData = value;
         }
+
+        protected override string defaultDisplayName
+        {
+            get
+            {
+                if (userData == null) return base.defaultDisplayName;
+                Type nodeAssetType = userData.GetType();
+                BehaviorTreeMenuAttribute createNodeMenu = nodeAssetType.GetCustomAttribute<BehaviorTreeMenuAttribute>();
+                if (createNodeMenu == null) return base.defaultDisplayName;
+                OperateMenuUtility.PathToNameAndCategory(createNodeMenu.path, out string titleText, out string _);
+                return titleText;
+            }
+        }
     }
 
     [EditorNode(typeof(EditorBehaviorTreeNodeAsset))]
@@ -31,19 +44,6 @@ namespace Emilia.BehaviorTree.Editor
         protected EditorBehaviorTreeNodeAsset behaviorTreeNodeAsset;
 
         public object openScriptObject => behaviorTreeNodeAsset.userData;
-
-        public override string defaultDisplayName
-        {
-            get
-            {
-                if (this.behaviorTreeNodeAsset == null || this.behaviorTreeNodeAsset.userData == null) return base.defaultDisplayName;
-                Type nodeAssetType = behaviorTreeNodeAsset.userData.GetType();
-                BehaviorTreeMenuAttribute createNodeMenu = nodeAssetType.GetCustomAttribute<BehaviorTreeMenuAttribute>();
-                if (createNodeMenu == null) return base.defaultDisplayName;
-                OperateMenuUtility.PathToNameAndCategory(createNodeMenu.path, out string titleText, out string _);
-                return titleText;
-            }
-        }
 
         public override void Initialize(EditorGraphView graphView, EditorNodeAsset asset)
         {
