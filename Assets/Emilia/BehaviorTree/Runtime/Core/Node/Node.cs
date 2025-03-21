@@ -100,6 +100,23 @@ namespace Emilia.BehaviorTree
             BehaviorTreeDebugUtility.Ping(this, nameof(Finish) + ":" + result);
         }
 
+        public void Dispose()
+        {
+            OnDispose();
+
+            ReferencePool.Release(this);
+        }
+
+        void IReference.Clear()
+        {
+            state = State.Inactive;
+
+            _children = null;
+            nodeAsset = null;
+            tree = null;
+
+        }
+
         protected virtual void OnInit() { }
 
         protected virtual void OnStart() { }
@@ -112,19 +129,6 @@ namespace Emilia.BehaviorTree
 
         protected virtual void OnFinish(bool result) { }
 
-        public void Dispose()
-        {
-            ReferencePool.Release(this);
-        }
-
-        public void Clear()
-        {
-            state = State.Inactive;
-
-            _children = null;
-            nodeAsset = null;
-            tree = null;
-
-        }
+        protected virtual void OnDispose() { }
     }
 }

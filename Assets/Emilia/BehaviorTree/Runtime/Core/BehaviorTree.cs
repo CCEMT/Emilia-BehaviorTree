@@ -131,7 +131,7 @@ namespace Emilia.BehaviorTree
             ReferencePool.Release(this);
         }
 
-        public void Clear()
+        void IReference.Clear()
         {
             this._nodes.Clear();
             this._nodeMap.Clear();
