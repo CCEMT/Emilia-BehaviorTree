@@ -22,5 +22,11 @@ namespace Emilia.BehaviorTree
         {
             asset = nodeAsset as T;
         }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            this.asset = null;
+        }
     }
 }
