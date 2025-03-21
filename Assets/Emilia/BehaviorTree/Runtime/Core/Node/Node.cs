@@ -111,10 +111,10 @@ namespace Emilia.BehaviorTree
         {
             state = State.Inactive;
 
+            parent = null;
             _children = null;
             nodeAsset = null;
             tree = null;
-
         }
 
         protected virtual void OnInit() { }

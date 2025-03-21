@@ -20,6 +20,12 @@ namespace Emilia.BehaviorTree
             base.OnParentCompositeStop(composite);
             decoratedNode.ParentCompositeStop(composite);
         }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            _decoratedNode = null;
+        }
     }
 
     public abstract class DecoratorAsset<T> : DecoratorAsset where T : Node, new()
@@ -38,6 +44,12 @@ namespace Emilia.BehaviorTree
         {
             base.OnInit();
             asset = nodeAsset as T;
+        }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            asset = null;
         }
     }
 }
