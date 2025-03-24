@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Emilia.BehaviorTree
 {
-    public class RuntimeBehaviorTreeRunner : IBehaviorTreeRunner
+    public class RuntimeBehaviorTreeRunner : IBehaviorTreeRunner, IReference
     {
         private IBehaviorTreeLoader behaviorTreeLoader;
         private BehaviorTree _behaviorTree;
@@ -42,12 +42,16 @@ namespace Emilia.BehaviorTree
 
         public void Dispose()
         {
+            _behaviorTree?.Dispose();
+            
+            ReferencePool.Release(this);
+        }
+
+        void IReference.Clear()
+        {
             BehaviorTreeRunnerUtility.RecycleId(uid);
             uid = -1;
 
-            if (_behaviorTree == null) return;
-
-            _behaviorTree.Dispose();
             _behaviorTree = null;
         }
     }

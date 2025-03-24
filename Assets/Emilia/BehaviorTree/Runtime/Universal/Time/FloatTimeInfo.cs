@@ -3,7 +3,7 @@
     public struct FloatTimeInfo : ITimeInfo
     {
         public float time;
-        
+
         public FloatTimeInfo(float time)
         {
             this.time = time;

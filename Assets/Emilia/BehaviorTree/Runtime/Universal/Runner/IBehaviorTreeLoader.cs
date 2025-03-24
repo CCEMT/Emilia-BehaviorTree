@@ -6,7 +6,7 @@ namespace Emilia.BehaviorTree
     {
         string runtimeFilePath { get; }
         string editorFilePath { get; }
-        
+
         Object LoadAsset(string path);
         BehaviorTreeAsset LoadBehaviorTreeAsset(byte[] bytes);
     }
