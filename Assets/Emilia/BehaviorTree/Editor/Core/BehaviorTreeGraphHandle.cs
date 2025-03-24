@@ -180,7 +180,7 @@ namespace Emilia.BehaviorTree.Editor
         private void ClearRunner()
         {
             if (this.debugRunner == null) return;
-            
+
             int count = runningNodes.Count;
             for (int i = 0; i < count; i++)
             {

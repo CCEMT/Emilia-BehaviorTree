@@ -19,14 +19,14 @@ namespace Emilia.BehaviorTree.Editor
             input.id = InputPortName;
             input.direction = EditorPortDirection.Input;
             input.orientation = EditorOrientation.Vertical;
-            
+
             portInfos.Add(input);
-            
+
             EditorPortInfo output = new EditorPortInfo();
             output.id = OutputPortName;
             output.direction = EditorPortDirection.Output;
             output.orientation = EditorOrientation.Vertical;
-            
+
             portInfos.Add(output);
 
             return portInfos;

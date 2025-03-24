@@ -26,7 +26,7 @@ namespace Emilia.BehaviorTree
         protected override void OnStart()
         {
             this.currentIndex = -1;
-            
+
             int n = this.randomizedOrder.Length;
             while (n > 1)
             {

@@ -7,7 +7,7 @@ namespace Emilia.BehaviorTree.Editor
     {
         private static Dictionary<string, List<EditorBehaviorTreeRunner>> _runnerByAssetId = new Dictionary<string, List<EditorBehaviorTreeRunner>>();
         private static Dictionary<int, EditorBehaviorTreeRunner> _runnerByUid = new Dictionary<int, EditorBehaviorTreeRunner>();
-        
+
         public static readonly Dictionary<int, Queue<EditorBehaviorTreeDebugPingMessage>> nodeMessage = new Dictionary<int, Queue<EditorBehaviorTreeDebugPingMessage>>();
         public static IReadOnlyDictionary<string, List<EditorBehaviorTreeRunner>> runnerByAssetId => _runnerByAssetId;
         public static IReadOnlyDictionary<int, EditorBehaviorTreeRunner> runnerByUid => _runnerByUid;
@@ -45,10 +45,10 @@ namespace Emilia.BehaviorTree.Editor
         public void Reload(BehaviorTreeAsset behaviorTreeAsset)
         {
             bool isStart = this.isActive;
-            
+
             Clock clock = this._behaviorTree.clock;
             object owner = this._behaviorTree.owner;
-            
+
             if (isStart) this.Stop();
             if (this._behaviorTree != null) this._behaviorTree.Dispose();
 

@@ -31,7 +31,7 @@ namespace Emilia.BehaviorTree.Editor
                 File.WriteAllBytes(path, bytes);
                 EditorKit.UnityInvoke(RefreshAssetDatabase);
             });
-            
+
             onFinished.Invoke();
 
             void RefreshAssetDatabase()
