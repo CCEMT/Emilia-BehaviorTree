@@ -1,4 +1,8 @@
-﻿using System;
+﻿#if !UNITY_EDITOR
+using Emilia.Reference;
+#endif
+
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -26,7 +30,7 @@ namespace Emilia.BehaviorTree
             Type type = Assembly.Load("Emilia.BehaviorTree.Editor").GetType("Emilia.BehaviorTree.Editor.EditorBehaviorTreeRunner");
             return Activator.CreateInstance(type) as IBehaviorTreeRunner;
 #else
-            return new UniversalBehaviorTreeRunner();
+            return ReferencePool.Acquire<RuntimeBehaviorTreeRunner>();
 #endif
         }
     }
