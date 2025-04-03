@@ -3,7 +3,7 @@ using Emilia.DataBuildPipeline.Editor;
 
 namespace Emilia.BehaviorTree.Editor
 {
-    [BuildPipeline(BehaviorTreeBuildPipeline.PipelineName), BuildSequence(3000)]
+    [BuildPipeline(typeof(BehaviorTreeBuildArgs)), BuildSequence(3000)]
     public class BehaviorTreeBuildAsset : IDataBuild
     {
         public void Build(IBuildContainer buildContainer, Action onFinished)

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Emilia.BehaviorTree.Editor
 {
-    [BuildPipeline(BehaviorTreeBuildPipeline.PipelineName), BuildSequence(2000)]
+    [BuildPipeline(typeof(BehaviorTreeBuildArgs)), BuildSequence(2000)]
     public class BehaviorTreeOutputFile : IDataOutput
     {
         public void Output(IBuildContainer buildContainer, IBuildArgs buildArgs, Action onFinished)

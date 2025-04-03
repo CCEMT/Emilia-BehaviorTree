@@ -8,7 +8,7 @@ using Sirenix.Serialization;
 
 namespace Emilia.BehaviorTree.Editor
 {
-    [BuildPipeline(BehaviorTreeBuildPipeline.PipelineName), BuildSequence(2000)]
+    [BuildPipeline(typeof(BehaviorTreeBuildArgs)), BuildSequence(2000)]
     public class BehaviorTreeBuildNode : IDataBuild
     {
         public void Build(IBuildContainer buildContainer, Action onFinished)

@@ -4,7 +4,7 @@ using Emilia.Variables;
 
 namespace Emilia.BehaviorTree.Editor
 {
-    [BuildPipeline(BehaviorTreeBuildPipeline.PipelineName), BuildSequence(1000)]
+    [BuildPipeline(typeof(BehaviorTreeBuildArgs)), BuildSequence(1000)]
     public class BehaviorTreeBuildParameters : IDataBuild
     {
         public void Build(IBuildContainer buildContainer, Action onFinished)

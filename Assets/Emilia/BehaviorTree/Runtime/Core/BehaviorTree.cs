@@ -24,11 +24,20 @@ namespace Emilia.BehaviorTree
         [SerializeField]
         private VariablesManage _variablesManage;
 
+        [SerializeField]
+        private object _userData;
+
         public string id => this._id;
         public string description => this._description;
         public int entryId => this._entryId;
         public IReadOnlyList<NodeAsset> nodes => this._nodes;
         public VariablesManage variablesManage => this._variablesManage;
+
+        public object userData
+        {
+            get => this._userData;
+            internal set => this._userData = value;
+        }
 
         public BehaviorTreeAsset(string id, string description, int entryId, List<NodeAsset> nodes, VariablesManage variablesManage)
         {
@@ -42,7 +51,7 @@ namespace Emilia.BehaviorTree
 
     public class BehaviorTree : IReference
     {
-        private bool isInited = false;
+        private bool isInit = false;
         private List<Node> _nodes = new List<Node>();
         private Dictionary<int, Node> _nodeMap = new Dictionary<int, Node>();
 
@@ -86,7 +95,7 @@ namespace Emilia.BehaviorTree
 
             entryNode = this._nodeMap[asset.entryId];
 
-            isInited = true;
+            this.isInit = true;
         }
 
         /// <summary>
@@ -94,7 +103,7 @@ namespace Emilia.BehaviorTree
         /// </summary>
         public void Start()
         {
-            if (isInited == false) return;
+            if (this.isInit == false) return;
             isActive = true;
             entryNode.Start();
         }
@@ -143,7 +152,7 @@ namespace Emilia.BehaviorTree
             owner = null;
 
             isActive = false;
-            isInited = false;
+            this.isInit = false;
         }
     }
 }
