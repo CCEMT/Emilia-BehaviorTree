@@ -26,7 +26,7 @@ namespace Emilia.BehaviorTree.Editor
             AddControl(new ButtonToolbarViewControl("保存", OnSave), ToolbarViewControlPosition.RightOrBottom);
         }
 
-        private void OnEditorParameter()
+        protected virtual void OnEditorParameter()
         {
             EditorBehaviorTreeAsset behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
 
@@ -40,7 +40,7 @@ namespace Emilia.BehaviorTree.Editor
             Selection.activeObject = editorParametersManage;
         }
 
-        private void OnEditorRuntimeParameter()
+        protected virtual void OnEditorRuntimeParameter()
         {
             GetBehaviorTreeRunnerEvent getBehaviorTreeRunnerEvent = GetBehaviorTreeRunnerEvent.GetPooled();
             getBehaviorTreeRunnerEvent.target = graphView;
@@ -50,7 +50,7 @@ namespace Emilia.BehaviorTree.Editor
             EditorKit.SetSelection(behaviorTreeRuntimeParameter, "运行参数");
         }
 
-        private OdinMenu BuildRunnerMenu()
+        protected virtual OdinMenu BuildRunnerMenu()
         {
             EditorBehaviorTreeAsset behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
 
@@ -77,7 +77,7 @@ namespace Emilia.BehaviorTree.Editor
             return odinMenu;
         }
 
-        private void OnSave()
+        protected virtual void OnSave()
         {
             EditorBehaviorTreeAsset behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
             EditorBehaviorTreeAsset rootBehaviorTreeAsset = behaviorTreeAsset.GetRootAsset() as EditorBehaviorTreeAsset;

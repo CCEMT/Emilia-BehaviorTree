@@ -4,7 +4,7 @@ using Emilia.Node.Editor;
 
 namespace Emilia.BehaviorTree.Editor
 {
-    [BuildPipeline(BehaviorTreeBuildPipeline.PipelineName), BuildSequence(1000)]
+    [BuildPipeline(typeof(BehaviorTreeBuildArgs)), BuildSequence(1000)]
     public class BehaviorTreeOutputEditor : IDataOutput
     {
         public void Output(IBuildContainer buildContainer, IBuildArgs buildArgs, Action onFinished)

@@ -2,11 +2,9 @@
 
 namespace Emilia.BehaviorTree.Editor
 {
-    [BuildPipeline(PipelineName)]
+    [BuildPipeline(typeof(BehaviorTreeBuildArgs))]
     public class BehaviorTreeBuildPipeline : UniversalBuildPipeline
     {
-        public const string PipelineName = "BehaviorTree";
-
         private BehaviorTreeBuildArgs behaviorTreeBuildArgs;
 
         protected override void RunInitialize()

@@ -11,8 +11,6 @@ namespace Emilia.BehaviorTree.Editor
 
         public BehaviorTreeBuildArgs(EditorBehaviorTreeAsset behaviorTreeAsset, string outputPath, Action<BuildReport> onBuildComplete = null)
         {
-            pipelineName = BehaviorTreeBuildPipeline.PipelineName;
-
             this.behaviorTreeAsset = behaviorTreeAsset;
             this.outputPath = outputPath;
             this.onBuildComplete = onBuildComplete;

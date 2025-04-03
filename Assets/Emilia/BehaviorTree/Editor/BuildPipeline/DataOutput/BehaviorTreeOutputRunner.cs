@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace Emilia.BehaviorTree.Editor
 {
-    [BuildPipeline(BehaviorTreeBuildPipeline.PipelineName), BuildSequence(3000)]
+    [BuildPipeline(typeof(BehaviorTreeBuildArgs)), BuildSequence(3000)]
     public class BehaviorTreeOutputRunner : IDataOutput
     {
         public void Output(IBuildContainer buildContainer, IBuildArgs buildArgs, Action onFinished)
