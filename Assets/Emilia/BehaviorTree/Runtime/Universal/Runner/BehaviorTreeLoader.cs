@@ -9,16 +9,11 @@ namespace Emilia.BehaviorTree
         public string editorFilePath { get; set; }
 
         public Func<string, Object> onLoadAsset { get; set; }
+        public Action<string> onReleaseAsset { get; set; }
         public Func<byte[], BehaviorTreeAsset> onLoadBehaviorTreeAsset { get; set; }
 
-        public Object LoadAsset(string path)
-        {
-            return onLoadAsset?.Invoke(path);
-        }
-
-        public BehaviorTreeAsset LoadBehaviorTreeAsset(byte[] bytes)
-        {
-            return onLoadBehaviorTreeAsset?.Invoke(bytes);
-        }
+        public Object LoadAsset(string path) => onLoadAsset?.Invoke(path);
+        public void ReleaseAsset(string path) => onReleaseAsset?.Invoke(path);
+        public BehaviorTreeAsset LoadBehaviorTreeAsset(byte[] bytes) => onLoadBehaviorTreeAsset?.Invoke(bytes);
     }
 }

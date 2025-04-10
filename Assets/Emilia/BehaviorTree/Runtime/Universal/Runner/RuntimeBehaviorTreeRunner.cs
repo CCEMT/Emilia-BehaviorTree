@@ -22,6 +22,7 @@ namespace Emilia.BehaviorTree
             string fullPath = $"{this.behaviorTreeLoader.runtimeFilePath}/{fileName}.bytes";
             TextAsset textAsset = this.behaviorTreeLoader.LoadAsset(fullPath) as TextAsset;
             BehaviorTreeAsset behaviorTreeAsset = this.behaviorTreeLoader.LoadBehaviorTreeAsset(textAsset.bytes);
+            behaviorTreeLoader.ReleaseAsset(fullPath);
 
             this._behaviorTree = ReferencePool.Acquire<BehaviorTree>();
             this._behaviorTree.Init(uid, behaviorTreeAsset, clock, owner);
