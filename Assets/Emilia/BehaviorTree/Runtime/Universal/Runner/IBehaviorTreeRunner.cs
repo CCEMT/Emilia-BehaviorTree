@@ -3,6 +3,8 @@
     public interface IBehaviorTreeRunner
     {
         int uid { get; }
+        
+        string fileName { get; }
 
         BehaviorTreeAsset asset { get; }
 
