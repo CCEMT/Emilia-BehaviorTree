@@ -15,46 +15,45 @@ namespace Emilia.BehaviorTree.Editor
         public static IReadOnlyDictionary<string, List<EditorBehaviorTreeRunner>> runnerByAssetId => _runnerByAssetId;
         public static IReadOnlyDictionary<int, EditorBehaviorTreeRunner> runnerByUid => _runnerByUid;
 
-        private IBehaviorTreeLoader behaviorTreeLoader;
-        private EditorBehaviorTreeAsset _editorBehaviorTreeAsset;
-
         private BehaviorTree _behaviorTree;
         private object owner;
-        
+
         public int uid { get; private set; }
-        public string fileName { get;  private set;}
+        public string fileName { get; private set; }
         public BehaviorTreeAsset asset => _behaviorTree.asset;
         public BehaviorTree behaviorTree => _behaviorTree;
         public bool isActive => _behaviorTree.isActive;
-
-        public EditorBehaviorTreeAsset editorBehaviorTreeAsset => _editorBehaviorTreeAsset;
 
         public void Init(string fileName, IBehaviorTreeLoader loader, Clock clock, object owner = null)
         {
             try
             {
                 this.fileName = fileName;
-                this.owner = owner;
-                uid = BehaviorTreeRunnerUtility.GetId();
-                this.behaviorTreeLoader = loader;
 
                 string fullPath = $"{loader.editorFilePath}/{fileName}.asset";
                 EditorBehaviorTreeAsset loadAsset = AssetDatabase.LoadAssetAtPath<EditorBehaviorTreeAsset>(fullPath);
-                this._editorBehaviorTreeAsset = loadAsset;
 
-                this._behaviorTree = new BehaviorTree();
-                this._behaviorTree.Init(uid, loadAsset.cache, clock, owner);
-
-                if (_runnerByAssetId.ContainsKey(loadAsset.id) == false) _runnerByAssetId[loadAsset.id] = new List<EditorBehaviorTreeRunner>();
-                _runnerByAssetId[loadAsset.id].Add(this);
-
-                _runnerByUid[uid] = this;
+                Init(loadAsset.cache, clock, owner);
             }
             catch (Exception e)
             {
                 Debug.LogError($"{owner} Init 时出现错误：\n{e.ToUnityLogString()}");
                 _behaviorTree?.Dispose();
             }
+        }
+
+        public void Init(BehaviorTreeAsset behaviorTreeAsset, Clock clock, object owner = null)
+        {
+            uid = BehaviorTreeRunnerUtility.GetId();
+            this.owner = owner;
+
+            this._behaviorTree = new BehaviorTree();
+            this._behaviorTree.Init(uid, behaviorTreeAsset, clock, owner);
+
+            if (_runnerByAssetId.ContainsKey(behaviorTreeAsset.id) == false) _runnerByAssetId[behaviorTreeAsset.id] = new List<EditorBehaviorTreeRunner>();
+            _runnerByAssetId[behaviorTreeAsset.id].Add(this);
+
+            _runnerByUid[uid] = this;
         }
 
         public void Reload(BehaviorTreeAsset behaviorTreeAsset)
@@ -113,10 +112,10 @@ namespace Emilia.BehaviorTree.Editor
                 uid = -1;
 
                 fileName = null;
-            
+
                 if (this._behaviorTree == null) return;
 
-                if (_runnerByAssetId.ContainsKey(this._editorBehaviorTreeAsset.id)) _runnerByAssetId[this._editorBehaviorTreeAsset.id].Remove(this);
+                if (_runnerByAssetId.ContainsKey(asset.id)) _runnerByAssetId[asset.id].Remove(this);
 
                 if (behaviorTree.isActive) this._behaviorTree.Dispose();
                 _behaviorTree = null;

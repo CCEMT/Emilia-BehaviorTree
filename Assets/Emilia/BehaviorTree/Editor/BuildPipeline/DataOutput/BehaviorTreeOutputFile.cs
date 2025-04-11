@@ -16,7 +16,7 @@ namespace Emilia.BehaviorTree.Editor
             BehaviorTreeBuildContainer container = buildContainer as BehaviorTreeBuildContainer;
             BehaviorTreeBuildArgs args = buildArgs as BehaviorTreeBuildArgs;
 
-            if (string.IsNullOrEmpty(args.outputPath))
+            if (args.isGenerateFile == false || string.IsNullOrEmpty(args.outputPath))
             {
                 onFinished.Invoke();
                 return;

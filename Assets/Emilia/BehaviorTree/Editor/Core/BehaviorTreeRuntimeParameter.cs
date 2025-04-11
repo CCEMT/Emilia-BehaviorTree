@@ -9,6 +9,7 @@ namespace Emilia.BehaviorTree.Editor
     [Serializable]
     public class BehaviorTreeRuntimeParameter
     {
+        private EditorBehaviorTreeAsset editorBehaviorTreeAsset;
         private EditorBehaviorTreeRunner runner;
 
         private Dictionary<string, Variable> _runtimeUserVariables = new Dictionary<string, Variable>();
@@ -23,7 +24,7 @@ namespace Emilia.BehaviorTree.Editor
 
                 foreach (var variablePair in this.runner.behaviorTree.blackboard.variablesManage.variableMap)
                 {
-                    EditorParameter editorParameter = this.runner.editorBehaviorTreeAsset.editorParametersManage.parameters.Find((x) => x.key == variablePair.Key);
+                    EditorParameter editorParameter = editorBehaviorTreeAsset.editorParametersManage.parameters.Find((x) => x.key == variablePair.Key);
                     if (editorParameter == null) continue;
                     _runtimeUserVariables[editorParameter.description] = variablePair.Value;
                 }
@@ -34,8 +35,9 @@ namespace Emilia.BehaviorTree.Editor
             set { }
         }
 
-        public BehaviorTreeRuntimeParameter(EditorBehaviorTreeRunner runner)
+        public BehaviorTreeRuntimeParameter(EditorBehaviorTreeRunner runner, EditorBehaviorTreeAsset editorBehaviorTreeAsset)
         {
+            this.editorBehaviorTreeAsset = editorBehaviorTreeAsset;
             this.runner = runner;
         }
     }

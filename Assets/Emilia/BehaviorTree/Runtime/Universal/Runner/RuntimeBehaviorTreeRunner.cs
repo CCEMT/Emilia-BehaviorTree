@@ -16,12 +16,18 @@ namespace Emilia.BehaviorTree
         public void Init(string fileName, IBehaviorTreeLoader loader, Clock clock, object owner = null)
         {
             this.fileName = fileName;
-            uid = BehaviorTreeRunnerUtility.GetId();
 
             string fullPath = $"{loader.runtimeFilePath}/{fileName}.bytes";
             TextAsset textAsset = loader.LoadAsset(fullPath) as TextAsset;
             BehaviorTreeAsset behaviorTreeAsset = loader.LoadBehaviorTreeAsset(textAsset.bytes);
             loader.ReleaseAsset(fullPath);
+
+            Init(behaviorTreeAsset, clock, owner);
+        }
+
+        public void Init(BehaviorTreeAsset behaviorTreeAsset, Clock clock, object owner = null)
+        {
+            uid = BehaviorTreeRunnerUtility.GetId();
 
             this._behaviorTree = ReferencePool.Acquire<BehaviorTree>();
             this._behaviorTree.Init(uid, behaviorTreeAsset, clock, owner);
