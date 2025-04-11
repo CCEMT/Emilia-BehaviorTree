@@ -46,7 +46,9 @@ namespace Emilia.BehaviorTree.Editor
             getBehaviorTreeRunnerEvent.target = graphView;
 
             graphView.SendEvent_Internal(getBehaviorTreeRunnerEvent, DispatchMode_Internals.Immediate);
-            BehaviorTreeRuntimeParameter behaviorTreeRuntimeParameter = new BehaviorTreeRuntimeParameter(getBehaviorTreeRunnerEvent.runner);
+
+            EditorBehaviorTreeAsset behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
+            BehaviorTreeRuntimeParameter behaviorTreeRuntimeParameter = new BehaviorTreeRuntimeParameter(getBehaviorTreeRunnerEvent.runner, behaviorTreeAsset);
             EditorKit.SetSelection(behaviorTreeRuntimeParameter, "运行参数");
         }
 
@@ -65,7 +67,7 @@ namespace Emilia.BehaviorTree.Editor
             {
                 EditorBehaviorTreeRunner runner = runners[i];
                 string itemName = runner.behaviorTree.owner.ToString();
-                if (string.IsNullOrEmpty(runner.editorBehaviorTreeAsset.description) == false) itemName = $"{runner.editorBehaviorTreeAsset.description}({runner.editorBehaviorTreeAsset.name})";
+                if (string.IsNullOrEmpty(runner.asset.description) == false) itemName = $"{runner.asset.description}({runner.fileName})";
                 odinMenu.AddItem(itemName, () => {
                     SetBehaviorTreeRunnerEvent e = SetBehaviorTreeRunnerEvent.Create(runner);
                     e.target = graphView;

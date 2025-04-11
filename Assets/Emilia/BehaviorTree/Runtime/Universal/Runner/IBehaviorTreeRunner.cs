@@ -4,6 +4,8 @@
     {
         int uid { get; }
 
+        string fileName { get; }
+
         BehaviorTreeAsset asset { get; }
 
         BehaviorTree behaviorTree { get; }
@@ -11,6 +13,8 @@
         bool isActive { get; }
 
         void Init(string fileName, IBehaviorTreeLoader loader, Clock clock, object owner = null);
+
+        void Init(BehaviorTreeAsset behaviorTreeAsset, Clock clock, object owner = null);
 
         void Start();
 

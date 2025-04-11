@@ -7,6 +7,8 @@ namespace Emilia.BehaviorTree.Editor
     {
         public EditorBehaviorTreeAsset behaviorTreeAsset;
         public string outputPath;
+        
+        public bool isGenerateFile;
         public bool updateRunner = true;
 
         public BehaviorTreeBuildArgs(EditorBehaviorTreeAsset behaviorTreeAsset, string outputPath, Action<BuildReport> onBuildComplete = null)
@@ -14,6 +16,7 @@ namespace Emilia.BehaviorTree.Editor
             this.behaviorTreeAsset = behaviorTreeAsset;
             this.outputPath = outputPath;
             this.onBuildComplete = onBuildComplete;
+            isGenerateFile = true;
         }
     }
 }
