@@ -1,5 +1,6 @@
 ﻿using System;
 using Emilia.DataBuildPipeline.Editor;
+using Emilia.Kit.Editor;
 using Emilia.Node.Editor;
 
 namespace Emilia.BehaviorTree.Editor
@@ -13,7 +14,7 @@ namespace Emilia.BehaviorTree.Editor
             container.editorAsset.cache = container.asset;
             container.editorAsset.cacheBindMap = container.bindMap;
 
-            container.editorAsset.Save();
+            container.editorAsset.SaveAll();
 
             onFinished.Invoke();
         }
