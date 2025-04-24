@@ -37,7 +37,7 @@ namespace Emilia.BehaviorTree.Editor
                 EditorAssetKit.SaveAssetIntoObject(editorParametersManage, behaviorTreeAsset);
             }
 
-            Selection.activeObject = editorParametersManage;
+            graphView.graphSelected.UpdateSelected(new List<ISelectedHandle> {editorParametersManage});
         }
 
         protected virtual void OnEditorRuntimeParameter()
