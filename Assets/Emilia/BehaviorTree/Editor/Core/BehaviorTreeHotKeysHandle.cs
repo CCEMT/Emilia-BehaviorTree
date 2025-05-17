@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 namespace Emilia.BehaviorTree.Editor
 {
     [EditorHandle(typeof(EditorBehaviorTreeAsset))]
-    public class BehaviorTreeHotKeysHandle : GraphHotKeysHandle
+    public class BehaviorTreeHotKeysHandle : UniversalGraphHotKeysHandle
     {
         public override void OnKeyDown(EditorGraphView graphView, KeyDownEvent evt)
         {

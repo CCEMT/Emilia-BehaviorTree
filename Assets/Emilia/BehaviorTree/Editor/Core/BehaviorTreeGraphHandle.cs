@@ -2,13 +2,14 @@
 using System.Linq;
 using Emilia.Kit;
 using Emilia.Node.Editor;
+using Emilia.Node.Universal.Editor;
 using UnityEditor;
 using UnityEngine;
 
 namespace Emilia.BehaviorTree.Editor
 {
     [EditorHandle(typeof(EditorBehaviorTreeAsset))]
-    public class BehaviorTreeGraphHandle : GraphHandle
+    public class BehaviorTreeGraphHandle : UniversalGraphHandle
     {
         private EditorGraphView editorGraphView;
         private EditorBehaviorTreeAsset editorBehaviorTreeAsset;

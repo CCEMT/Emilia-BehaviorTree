@@ -3,12 +3,13 @@ using System.Linq;
 using Emilia.BehaviorTree.Attributes;
 using Emilia.Kit;
 using Emilia.Node.Editor;
+using Emilia.Node.Universal.Editor;
 using Sirenix.Utilities;
 
 namespace Emilia.BehaviorTree.Editor
 {
     [EditorHandle(typeof(EditorBehaviorTreeAsset))]
-    public class BehaviorTreeCreateNodeMenuHandle : CreateNodeMenuHandle
+    public class BehaviorTreeCreateNodeMenuHandle : UniversalCreateNodeMenuHandle
     {
         private EditorBehaviorTreeAsset behaviorTreeAsset;
 
