@@ -17,10 +17,7 @@ namespace Emilia.BehaviorTree
         {
             base.OnInit();
             randomizedOrder = new int[children.Count];
-            for (int i = 0; i < children.Count; i++)
-            {
-                this.randomizedOrder[i] = i;
-            }
+            for (int i = 0; i < children.Count; i++) { this.randomizedOrder[i] = i; }
         }
 
         protected override void OnStart()

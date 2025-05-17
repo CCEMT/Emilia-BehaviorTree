@@ -1,32 +1,27 @@
-﻿using Emilia.BehaviorTree.Attributes;
+﻿using System.Reflection;
+using Emilia.BehaviorTree.Attributes;
+using Emilia.Kit;
 using Emilia.Kit.Editor;
 using Emilia.Node.Editor;
-using Sirenix.Utilities;
 
 namespace Emilia.BehaviorTree.Editor
 {
-    public class BehaviorTreeCreateNodeHandle : CreateNodeHandle<NodeAsset>
+    [EditorHandle(typeof(NodeAsset))]
+    public class BehaviorTreeCreateNodeHandle : CreateNodeHandle
     {
-        protected object _nodeData;
-        protected string _path;
-        protected int _priority;
-
-        public override object nodeData => this._nodeData;
-        public override string path => _path;
-        public override int priority => _priority;
-
-        public override void Initialize(object weakSmartValue)
+        public override void Initialize(object arg)
         {
-            base.Initialize(weakSmartValue);
+            base.Initialize(arg);
 
-            BehaviorTreeMenuAttribute menuAttribute = this.value.nodeType.GetCustomAttribute<BehaviorTreeMenuAttribute>();
+            CreateNodeHandleContext context = (CreateNodeHandleContext) arg;
+            BehaviorTreeMenuAttribute menuAttribute = context.nodeType.GetCustomAttribute<BehaviorTreeMenuAttribute>();
             if (menuAttribute != null)
             {
-                this._path = menuAttribute.path;
-                this._priority = menuAttribute.priority;
+                path = menuAttribute.path;
+                priority = menuAttribute.priority;
             }
 
-            this._nodeData = ReflectUtility.CreateInstance(this.value.nodeType);
+            nodeData = ReflectUtility.CreateInstance(context.nodeType);
         }
     }
 }

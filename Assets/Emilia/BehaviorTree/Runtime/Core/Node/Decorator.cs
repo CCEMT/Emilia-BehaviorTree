@@ -30,10 +30,7 @@ namespace Emilia.BehaviorTree
 
     public abstract class DecoratorAsset<T> : DecoratorAsset where T : Node, new()
     {
-        public override Node CreateNode()
-        {
-            return ReferencePool.Acquire<T>();
-        }
+        public override Node CreateNode() => ReferencePool.Acquire<T>();
     }
 
     public abstract class Decorator<T> : Decorator where T : NodeAsset

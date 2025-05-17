@@ -41,15 +41,9 @@ namespace Emilia.BehaviorTree
         /// <summary>
         /// 获取变量
         /// </summary>
-        public T Get<T>(string key)
-        {
-            return this._variablesManage.GetValue<T>(key);
-        }
+        public T Get<T>(string key) => this._variablesManage.GetValue<T>(key);
 
-        public Variable GetVariable(string key)
-        {
-            return this._variablesManage.GetThisValue(key);
-        }
+        public Variable GetVariable(string key) => this._variablesManage.GetThisValue(key);
 
         private void Fire()
         {

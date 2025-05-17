@@ -7,7 +7,7 @@ namespace Emilia.BehaviorTree.Editor
     {
         public EditorBehaviorTreeAsset behaviorTreeAsset;
         public string outputPath;
-        
+
         public bool isGenerateFile;
         public bool updateRunner = true;
 

@@ -1,27 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Emilia.Kit;
 using Emilia.Node.Editor;
 using UnityEditor;
 using UnityEngine;
 
 namespace Emilia.BehaviorTree.Editor
 {
-    public class BehaviorTreeGraphHandle : GraphHandle<EditorBehaviorTreeAsset>
+    [EditorHandle(typeof(EditorBehaviorTreeAsset))]
+    public class BehaviorTreeGraphHandle : GraphHandle
     {
+        private EditorGraphView editorGraphView;
         private EditorBehaviorTreeAsset editorBehaviorTreeAsset;
         private EditorBehaviorTreeRunner debugRunner;
         private List<int> runningNodes = new List<int>();
 
-        public override void Initialize(object weakSmartValue)
+        public override void Initialize(EditorGraphView graphView)
         {
-            base.Initialize(weakSmartValue);
-            editorBehaviorTreeAsset = this.smartValue.graphAsset as EditorBehaviorTreeAsset;
-            this.smartValue.RegisterCallback<GetBehaviorTreeRunnerEvent>(OnGetBehaviorTreeRunner);
-            this.smartValue.RegisterCallback<SetBehaviorTreeRunnerEvent>(OnSetBehaviorTreeRunner);
+            base.Initialize(graphView);
+            editorGraphView = graphView;
+            editorBehaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
+            editorGraphView.RegisterCallback<GetBehaviorTreeRunnerEvent>(OnGetBehaviorTreeRunner);
+            editorGraphView.RegisterCallback<SetBehaviorTreeRunnerEvent>(OnSetBehaviorTreeRunner);
         }
 
-        public override void OnUpdate()
+        public override void OnUpdate(EditorGraphView graphView)
         {
+            base.OnUpdate(graphView);
             if (EditorApplication.isPlaying == false)
             {
                 ClearRunner();
@@ -30,7 +35,7 @@ namespace Emilia.BehaviorTree.Editor
 
             if (this.debugRunner == null)
             {
-                List<EditorBehaviorTreeRunner> runners = EditorBehaviorTreeRunner.runnerByAssetId.GetValueOrDefault(smartValue.graphAsset.id);
+                List<EditorBehaviorTreeRunner> runners = EditorBehaviorTreeRunner.runnerByAssetId.GetValueOrDefault(graphView.graphAsset.id);
                 if (runners != null && runners.Count == 1)
                 {
                     this.debugRunner = runners.FirstOrDefault();
@@ -39,8 +44,8 @@ namespace Emilia.BehaviorTree.Editor
             }
             else
             {
-                if (EditorBehaviorTreeRunner.runnerByAssetId.ContainsKey(smartValue.graphAsset.id) == false) ClearRunner();
-                else if (EditorBehaviorTreeRunner.runnerByAssetId[smartValue.graphAsset.id].Contains(this.debugRunner) == false) ClearRunner();
+                if (EditorBehaviorTreeRunner.runnerByAssetId.ContainsKey(graphView.graphAsset.id) == false) ClearRunner();
+                else if (EditorBehaviorTreeRunner.runnerByAssetId[graphView.graphAsset.id].Contains(this.debugRunner) == false) ClearRunner();
             }
 
             DrawDebug();
@@ -77,7 +82,7 @@ namespace Emilia.BehaviorTree.Editor
             {
                 BehaviorTree machine = queue.Dequeue();
 
-                if (machine.asset.id == smartValue.graphAsset.id)
+                if (machine.asset.id == editorGraphView.graphAsset.id)
                 {
                     behaviorTree = machine;
                     break;
@@ -121,7 +126,7 @@ namespace Emilia.BehaviorTree.Editor
                     if (this.runningNodes.Contains(node.id) == false)
                     {
                         string editorNodeId = editorBehaviorTreeAsset.cacheBindMap.GetValueOrDefault(node.id);
-                        EditorBehaviorTreeNodeView nodeView = smartValue.graphElementCache.nodeViewById.GetValueOrDefault(editorNodeId) as EditorBehaviorTreeNodeView;
+                        EditorBehaviorTreeNodeView nodeView = editorGraphView.graphElementCache.nodeViewById.GetValueOrDefault(editorNodeId) as EditorBehaviorTreeNodeView;
                         if (nodeView == null) continue;
                         nodeView.SetFocus(Color.green);
                         runningNodes.Add(node.id);
@@ -132,7 +137,7 @@ namespace Emilia.BehaviorTree.Editor
                     if (this.runningNodes.Contains(node.id))
                     {
                         string editorNodeId = editorBehaviorTreeAsset.cacheBindMap.GetValueOrDefault(node.id);
-                        EditorBehaviorTreeNodeView nodeView = smartValue.graphElementCache.nodeViewById.GetValueOrDefault(editorNodeId) as EditorBehaviorTreeNodeView;
+                        EditorBehaviorTreeNodeView nodeView = editorGraphView.graphElementCache.nodeViewById.GetValueOrDefault(editorNodeId) as EditorBehaviorTreeNodeView;
                         if (nodeView == null) continue;
                         nodeView.ClearFocus();
                         runningNodes.Remove(node.id);
@@ -171,7 +176,7 @@ namespace Emilia.BehaviorTree.Editor
             string editorNodeId = editorBehaviorTreeAsset.cacheBindMap.GetValueOrDefault(nodeId);
             if (string.IsNullOrEmpty(editorNodeId)) return null;
 
-            IEditorNodeView nodeView = smartValue.graphElementCache.nodeViewById.GetValueOrDefault(editorNodeId);
+            IEditorNodeView nodeView = editorGraphView.graphElementCache.nodeViewById.GetValueOrDefault(editorNodeId);
             if (nodeView == null) return null;
 
             return nodeView as EditorBehaviorTreeNodeView;
@@ -185,7 +190,7 @@ namespace Emilia.BehaviorTree.Editor
             for (int i = 0; i < count; i++)
             {
                 string editorNodeId = editorBehaviorTreeAsset.cacheBindMap.GetValueOrDefault(runningNodes[i]);
-                EditorBehaviorTreeNodeView nodeView = smartValue.graphElementCache.nodeViewById.GetValueOrDefault(editorNodeId) as EditorBehaviorTreeNodeView;
+                EditorBehaviorTreeNodeView nodeView = editorGraphView.graphElementCache.nodeViewById.GetValueOrDefault(editorNodeId) as EditorBehaviorTreeNodeView;
                 if (nodeView == null) continue;
                 nodeView.ClearFocus();
             }

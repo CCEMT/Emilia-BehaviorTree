@@ -1,7 +1,6 @@
 ﻿using System;
 using Emilia.DataBuildPipeline.Editor;
 using Emilia.Kit.Editor;
-using Emilia.Node.Editor;
 
 namespace Emilia.BehaviorTree.Editor
 {

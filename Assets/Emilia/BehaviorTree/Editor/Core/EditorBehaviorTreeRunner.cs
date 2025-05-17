@@ -75,10 +75,7 @@ namespace Emilia.BehaviorTree.Editor
         {
             if (this._behaviorTree == null) return;
 
-            try
-            {
-                this._behaviorTree.Start();
-            }
+            try { this._behaviorTree.Start(); }
             catch (Exception e)
             {
                 Debug.LogError($"{owner} Start 时出现错误：\n{e.ToUnityLogString()}");
@@ -90,10 +87,7 @@ namespace Emilia.BehaviorTree.Editor
         {
             if (this._behaviorTree == null) return;
 
-            try
-            {
-                this._behaviorTree.Stop();
-            }
+            try { this._behaviorTree.Stop(); }
             catch (Exception e)
             {
                 Debug.LogError($"{owner} Stop 时出现错误：\n{e.ToUnityLogString()}");
@@ -122,10 +116,7 @@ namespace Emilia.BehaviorTree.Editor
 
                 owner = null;
             }
-            catch (Exception e)
-            {
-                Debug.LogError($"{owner} Dispose 时出现错误：\n{e.ToUnityLogString()}");
-            }
+            catch (Exception e) { Debug.LogError($"{owner} Dispose 时出现错误：\n{e.ToUnityLogString()}"); }
         }
     }
 }
