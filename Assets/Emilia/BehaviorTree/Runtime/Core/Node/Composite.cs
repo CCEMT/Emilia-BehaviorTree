@@ -21,10 +21,7 @@ namespace Emilia.BehaviorTree
 
     public abstract class CompositeAsset<T> : CompositeAsset where T : Node, new()
     {
-        public override Node CreateNode()
-        {
-            return ReferencePool.Acquire<T>();
-        }
+        public override Node CreateNode() => ReferencePool.Acquire<T>();
     }
 
     public abstract class Composite<T> : Composite where T : NodeAsset

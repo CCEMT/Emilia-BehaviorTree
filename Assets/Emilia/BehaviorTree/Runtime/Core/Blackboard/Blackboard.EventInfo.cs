@@ -15,20 +15,11 @@ namespace Emilia.BehaviorTree
                 this.action = action;
             }
 
-            public bool Equals(EventInfo other)
-            {
-                return this.key == other.key && Equals(this.action, other.action);
-            }
+            public bool Equals(EventInfo other) => this.key == other.key && Equals(this.action, other.action);
 
-            public override bool Equals(object obj)
-            {
-                return obj is EventInfo other && Equals(other);
-            }
+            public override bool Equals(object obj) => obj is EventInfo other && Equals(other);
 
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(this.key, this.action);
-            }
+            public override int GetHashCode() => HashCode.Combine(this.key, this.action);
         }
     }
 }

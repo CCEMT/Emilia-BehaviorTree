@@ -1,40 +1,42 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Emilia.BehaviorTree.Attributes;
+using Emilia.Kit;
 using Emilia.Node.Editor;
+using Emilia.Node.Universal.Editor;
 using Sirenix.Utilities;
 
 namespace Emilia.BehaviorTree.Editor
 {
-    public class BehaviorTreeCreateNodeMenuHandle : CreateNodeMenuHandle<EditorBehaviorTreeAsset>
+    [EditorHandle(typeof(EditorBehaviorTreeAsset))]
+    public class BehaviorTreeCreateNodeMenuHandle : UniversalCreateNodeMenuHandle
     {
         private EditorBehaviorTreeAsset behaviorTreeAsset;
 
-        public override void InitializeCache()
+        public override void InitializeCache(EditorGraphView graphView, List<ICreateNodeHandle> createNodeHandles)
         {
-            base.InitializeCache();
+            base.InitializeCache(graphView, createNodeHandles);
+            behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
 
-            behaviorTreeAsset = smartValue.graphAsset as EditorBehaviorTreeAsset;
-
-            FilterCreateNodeHandles();
-
-            AddRoot();
+            FilterCreateNodeHandles(graphView);
+            AddRoot(graphView);
         }
 
-        private void AddRoot()
+        private void AddRoot(EditorGraphView graphView)
         {
             CreateNodeHandle rootNodeHandle = new CreateNodeHandle();
             rootNodeHandle.editorNodeType = typeof(EditorRootNodeAsset);
             rootNodeHandle.path = "入口";
 
-            smartValue.createNodeMenu.createNodeHandleCacheList.Add(rootNodeHandle);
+            graphView.createNodeMenu.createNodeHandleCacheList.Add(rootNodeHandle);
         }
 
-        private void FilterCreateNodeHandles()
+        private void FilterCreateNodeHandles(EditorGraphView graphView)
         {
-            int cacheAmount = smartValue.createNodeMenu.createNodeHandleCacheList.Count;
+            int cacheAmount = graphView.createNodeMenu.createNodeHandleCacheList.Count;
             for (int i = cacheAmount - 1; i >= 0; i--)
             {
-                ICreateNodeHandle createNodeHandle = smartValue.createNodeMenu.createNodeHandleCacheList[i];
+                ICreateNodeHandle createNodeHandle = graphView.createNodeMenu.createNodeHandleCacheList[i];
 
                 object nodeData = createNodeHandle.nodeData;
                 if (nodeData == null) continue;
@@ -42,11 +44,11 @@ namespace Emilia.BehaviorTree.Editor
                 NodeTagAttribute[] nodeTagAttributes = nodeData.GetType().GetCustomAttributes<NodeTagAttribute>(true).ToArray();
                 if (nodeTagAttributes.Any() == false)
                 {
-                    smartValue.createNodeMenu.createNodeHandleCacheList.RemoveAt(i);
+                    graphView.createNodeMenu.createNodeHandleCacheList.RemoveAt(i);
                     continue;
                 }
 
-                if (IsContain(nodeTagAttributes) == false) smartValue.createNodeMenu.createNodeHandleCacheList.RemoveAt(i);
+                if (IsContain(nodeTagAttributes) == false) graphView.createNodeMenu.createNodeHandleCacheList.RemoveAt(i);
             }
         }
 

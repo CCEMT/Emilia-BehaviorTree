@@ -73,22 +73,10 @@ namespace Emilia.BehaviorTree
             {
                 if (this.childrenAborted == false)
                 {
-                    if (this.asset.failurePolicy == ParallelPolicy.One && this.failedCount > 0)
-                    {
-                        this.successState = false;
-                    }
-                    else if (this.asset.successPolicy == ParallelPolicy.One && this.succeededCount > 0)
-                    {
-                        this.successState = true;
-                    }
-                    else if (this.asset.successPolicy == ParallelPolicy.All && this.succeededCount == children.Count)
-                    {
-                        this.successState = true;
-                    }
-                    else
-                    {
-                        this.successState = false;
-                    }
+                    if (this.asset.failurePolicy == ParallelPolicy.One && this.failedCount > 0) { this.successState = false; }
+                    else if (this.asset.successPolicy == ParallelPolicy.One && this.succeededCount > 0) { this.successState = true; }
+                    else if (this.asset.successPolicy == ParallelPolicy.All && this.succeededCount == children.Count) { this.successState = true; }
+                    else { this.successState = false; }
                 }
 
                 Finish(this.successState);

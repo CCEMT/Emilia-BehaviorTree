@@ -8,10 +8,7 @@ namespace Emilia.BehaviorTree
 
     public abstract class TaskAsset<T> : TaskAsset where T : Node, new()
     {
-        public override Node CreateNode()
-        {
-            return ReferencePool.Acquire<T>();
-        }
+        public override Node CreateNode() => ReferencePool.Acquire<T>();
     }
 
     public abstract class Task<T> : Task where T : NodeAsset

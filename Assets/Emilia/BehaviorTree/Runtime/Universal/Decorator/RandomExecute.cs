@@ -15,14 +15,8 @@ namespace Emilia.BehaviorTree
     {
         protected override void OnStart()
         {
-            if (Random.value < asset.probability)
-            {
-                decoratedNode.Start();
-            }
-            else
-            {
-                Finish(false);
-            }
+            if (Random.value < asset.probability) { decoratedNode.Start(); }
+            else { Finish(false); }
         }
 
         protected override void OnStop()
