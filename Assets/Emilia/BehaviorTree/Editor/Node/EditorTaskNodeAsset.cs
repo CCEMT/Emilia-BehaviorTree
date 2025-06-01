@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Emilia.Node.Attributes;
 using Emilia.Node.Editor;
+using Emilia.Node.Universal.Editor;
 using Sirenix.OdinInspector;
 
 namespace Emilia.BehaviorTree.Editor
@@ -15,7 +16,7 @@ namespace Emilia.BehaviorTree.Editor
         {
             List<EditorPortInfo> portInfos = new List<EditorPortInfo>();
 
-            EditorPortInfo input = new EditorPortInfo();
+            UniversalEditorPortInfo input = new UniversalEditorPortInfo();
             input.id = InputPortName;
             input.direction = EditorPortDirection.Input;
             input.orientation = EditorOrientation.Vertical;
