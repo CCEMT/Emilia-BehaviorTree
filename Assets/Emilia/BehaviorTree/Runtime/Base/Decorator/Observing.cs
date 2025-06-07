@@ -29,6 +29,13 @@ namespace Emilia.BehaviorTree
             observingAsset = (IObservingAsset) this.nodeAsset;
         }
 
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            observingAsset = null;
+            isObserving = false;
+        }
+
         protected override void OnStart()
         {
             if (this.observingAsset.stops != Stops.None)

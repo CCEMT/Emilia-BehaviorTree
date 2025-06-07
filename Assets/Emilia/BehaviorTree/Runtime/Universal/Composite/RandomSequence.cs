@@ -20,6 +20,13 @@ namespace Emilia.BehaviorTree
             for (int i = 0; i < children.Count; i++) { this.randomizedOrder[i] = i; }
         }
 
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            this.randomizedOrder = null;
+            this.currentIndex = -1;
+        }
+
         protected override void OnStart()
         {
             this.currentIndex = -1;

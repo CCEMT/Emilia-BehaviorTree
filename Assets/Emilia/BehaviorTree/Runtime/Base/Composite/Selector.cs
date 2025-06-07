@@ -54,5 +54,11 @@ namespace Emilia.BehaviorTree
                 }
             }
         }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            currentIndex = -1;
+        }
     }
 }

@@ -22,5 +22,7 @@
             FrameTimeInfo otherTime = (FrameTimeInfo) other;
             return frame.CompareTo(otherTime.frame);
         }
+
+        public ITimeInfo GetDefault() => new FrameTimeInfo(0);
     }
 }

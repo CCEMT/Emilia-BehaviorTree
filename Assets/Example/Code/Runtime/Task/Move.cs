@@ -43,5 +43,11 @@ namespace Emilia.AI.Task
             clock.RemoveUpdateEvent(UpdatePosition);
             Finish(true);
         }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            gameObject = null;
+        }
     }
 }

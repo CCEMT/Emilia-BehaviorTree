@@ -191,6 +191,7 @@ namespace Emilia.BehaviorTree.Editor
             for (int i = 0; i < count; i++)
             {
                 string editorNodeId = editorBehaviorTreeAsset.cacheBindMap.GetValueOrDefault(runningNodes[i]);
+                if (string.IsNullOrEmpty(editorNodeId)) continue;
                 EditorBehaviorTreeNodeView nodeView = editorGraphView.graphElementCache.nodeViewById.GetValueOrDefault(editorNodeId) as EditorBehaviorTreeNodeView;
                 if (nodeView == null) continue;
                 nodeView.ClearFocus();
