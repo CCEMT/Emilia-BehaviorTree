@@ -38,7 +38,7 @@ Odin版本：3.1.2+
 
 ## 例子
 
-基于Emilia-BehaviorTree 实现的AI行为树编辑器 [AI](https://github.com/CCEMT/Emilia-AI)
+基于Emilia-BehaviorTree 实现的AI行为树编辑器 [AI]
 
 ![ai](./doc/ai.gif)
 
