@@ -117,5 +117,16 @@ namespace Emilia.BehaviorTree
 
             abortForChild.Start();
         }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            runningCount = 0;
+            succeededCount = 0;
+            failedCount = 0;
+            
+            successState = false;
+            childrenAborted = false;
+        }
     }
 }

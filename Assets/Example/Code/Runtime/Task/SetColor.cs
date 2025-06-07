@@ -24,6 +24,13 @@ namespace Emilia.AI.Task
             if (gameObject != null) renderer = gameObject.GetComponentInChildren<Renderer>();
         }
 
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            gameObject = null;
+            renderer = null;
+        }
+
         protected override void OnStart()
         {
             base.OnStart();

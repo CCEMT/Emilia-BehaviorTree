@@ -30,5 +30,11 @@ namespace Emilia.BehaviorTree
             if (timer != null) tree.clock.RemoveTimer(timer);
             Finish(true);
         }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            this.timer = null;
+        }
     }
 }

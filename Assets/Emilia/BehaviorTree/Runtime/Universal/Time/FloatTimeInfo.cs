@@ -20,5 +20,7 @@
             FloatTimeInfo otherTime = (FloatTimeInfo) other;
             return time.CompareTo(otherTime.time);
         }
+
+        public ITimeInfo GetDefault() => new FloatTimeInfo(0f);
     }
 }

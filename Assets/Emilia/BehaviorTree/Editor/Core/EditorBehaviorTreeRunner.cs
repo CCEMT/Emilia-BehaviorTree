@@ -61,6 +61,8 @@ namespace Emilia.BehaviorTree.Editor
             bool isStart = this.isActive;
 
             Clock clock = this._behaviorTree.clock;
+            clock.Reset(clock.time.GetDefault());
+
             object newOwner = this._behaviorTree.owner;
 
             if (isStart) this.Stop();

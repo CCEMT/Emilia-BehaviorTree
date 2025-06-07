@@ -51,5 +51,12 @@ namespace Emilia.BehaviorTree
         {
             decoratedNode.Start();
         }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            currentLoop = 0;
+            timer = null;
+        }
     }
 }
