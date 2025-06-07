@@ -5,7 +5,7 @@ namespace Emilia.AI
 {
     public class AIMono : MonoBehaviour
     {
-        public const string EditorPath = "Assets/Emilia/AI/Resource/Asset";
+        public const string EditorPath = "Assets/Example/Resource/Asset";
 
         public string fileName;
 
