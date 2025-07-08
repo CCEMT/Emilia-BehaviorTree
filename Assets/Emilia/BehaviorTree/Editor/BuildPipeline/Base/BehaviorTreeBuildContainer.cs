@@ -4,10 +4,9 @@ using Emilia.Variables;
 
 namespace Emilia.BehaviorTree.Editor
 {
+    [BuildPipeline(typeof(BehaviorTreeBuildArgs))]
     public class BehaviorTreeBuildContainer : BuildContainer
     {
-        public EditorBehaviorTreeAsset editorAsset { get; set; }
-
         public Dictionary<int, string> bindMap { get; set; } = new Dictionary<int, string>();
         public VariablesManage variablesManage { get; set; }
         public List<NodeAsset> nodeAssets { get; set; }

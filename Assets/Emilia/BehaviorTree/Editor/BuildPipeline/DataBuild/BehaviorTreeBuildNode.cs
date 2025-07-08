@@ -11,11 +11,12 @@ namespace Emilia.BehaviorTree.Editor
     [BuildPipeline(typeof(BehaviorTreeBuildArgs)), BuildSequence(2000)]
     public class BehaviorTreeBuildNode : IDataBuild
     {
-        public void Build(IBuildContainer buildContainer, Action onFinished)
+        public void Build(IBuildContainer buildContainer, IBuildArgs buildArgs, Action onFinished)
         {
             BehaviorTreeBuildContainer container = buildContainer as BehaviorTreeBuildContainer;
+            BehaviorTreeBuildArgs behaviorTreeBuildArgs = buildArgs as BehaviorTreeBuildArgs;
 
-            List<EditorBehaviorTreeNodeAsset> allNodes = container.editorAsset.nodes.OfType<EditorBehaviorTreeNodeAsset>().ToList();
+            List<EditorBehaviorTreeNodeAsset> allNodes = behaviorTreeBuildArgs.behaviorTreeAsset.nodes.OfType<EditorBehaviorTreeNodeAsset>().ToList();
 
             Dictionary<int, EditorBehaviorTreeNodeAsset> nodeByRuntimeIdMap = new Dictionary<int, EditorBehaviorTreeNodeAsset>();
             Dictionary<string, NodeAsset> nodeByEditorIdMap = new Dictionary<string, NodeAsset>();
@@ -24,7 +25,7 @@ namespace Emilia.BehaviorTree.Editor
 
             Queue<EditorBehaviorTreeNodeAsset> nodeQueue = new Queue<EditorBehaviorTreeNodeAsset>();
             EditorRootNodeAsset rootNode = allNodes.OfType<EditorRootNodeAsset>().FirstOrDefault();
-            EditorBehaviorTreeNodeAsset rootOutputNode = container.editorAsset.GetOutputNodes(rootNode).FirstOrDefault() as EditorBehaviorTreeNodeAsset;
+            EditorBehaviorTreeNodeAsset rootOutputNode = behaviorTreeBuildArgs.behaviorTreeAsset.GetOutputNodes(rootNode).FirstOrDefault() as EditorBehaviorTreeNodeAsset;
             nodeQueue.Enqueue(rootOutputNode);
 
             int id = 0;
@@ -43,7 +44,7 @@ namespace Emilia.BehaviorTree.Editor
                 nodeByEditorIdMap[editorNode.id] = node;
                 nodeAssets.Add(node);
 
-                List<EditorNodeAsset> outputNodes = container.editorAsset.GetOutputNodes(editorNode);
+                List<EditorNodeAsset> outputNodes = behaviorTreeBuildArgs.behaviorTreeAsset.GetOutputNodes(editorNode);
                 outputNodes.Sort((a, b) => a.position.x.CompareTo(b.position.x));
 
                 int outputNodeCount = outputNodes.Count;
@@ -68,7 +69,7 @@ namespace Emilia.BehaviorTree.Editor
                 List<int> children = node.childrenIds as List<int>;
                 children.Clear();
 
-                List<EditorNodeAsset> outputNodes = container.editorAsset.GetOutputNodes(editorNode);
+                List<EditorNodeAsset> outputNodes = behaviorTreeBuildArgs.behaviorTreeAsset.GetOutputNodes(editorNode);
                 outputNodes.Sort((a, b) => a.position.x.CompareTo(b.position.x));
 
                 int outputNodeCount = outputNodes.Count;

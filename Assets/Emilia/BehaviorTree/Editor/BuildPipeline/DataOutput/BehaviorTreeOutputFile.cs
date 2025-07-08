@@ -23,7 +23,7 @@ namespace Emilia.BehaviorTree.Editor
             }
 
             string dataPathNoAssets = Directory.GetParent(Application.dataPath).ToString();
-            string path = $"{dataPathNoAssets}/{args.outputPath}/{container.editorAsset.name}.bytes";
+            string path = $"{dataPathNoAssets}/{args.outputPath}/{args.behaviorTreeAsset.name}.bytes";
 
             System.Threading.Tasks.Task.Run(() => {
                 if (File.Exists(path)) File.Delete(path);
