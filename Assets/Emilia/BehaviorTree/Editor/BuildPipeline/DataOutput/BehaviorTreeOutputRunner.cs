@@ -19,7 +19,7 @@ namespace Emilia.BehaviorTree.Editor
                 return;
             }
 
-            List<EditorBehaviorTreeRunner> runners = EditorBehaviorTreeRunner.runnerByAssetId.GetValueOrDefault(container.editorAsset.id);
+            List<EditorBehaviorTreeRunner> runners = EditorBehaviorTreeRunner.runnerByAssetId.GetValueOrDefault(args.behaviorTreeAsset.id);
             if (runners == null)
             {
                 onFinished.Invoke();

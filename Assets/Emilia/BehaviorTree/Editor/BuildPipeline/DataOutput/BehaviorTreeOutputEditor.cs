@@ -10,10 +10,12 @@ namespace Emilia.BehaviorTree.Editor
         public void Output(IBuildContainer buildContainer, IBuildArgs buildArgs, Action onFinished)
         {
             BehaviorTreeBuildContainer container = buildContainer as BehaviorTreeBuildContainer;
-            container.editorAsset.cache = container.asset;
-            container.editorAsset.cacheBindMap = container.bindMap;
+            BehaviorTreeBuildArgs behaviorTreeBuildArgs = buildArgs as BehaviorTreeBuildArgs;
+            
+            behaviorTreeBuildArgs.behaviorTreeAsset.cache = container.asset;
+            behaviorTreeBuildArgs.behaviorTreeAsset.cacheBindMap = container.bindMap;
 
-            container.editorAsset.SaveAll();
+            behaviorTreeBuildArgs.behaviorTreeAsset.SaveAll();
 
             onFinished.Invoke();
         }

@@ -7,14 +7,15 @@ namespace Emilia.BehaviorTree.Editor
     [BuildPipeline(typeof(BehaviorTreeBuildArgs)), BuildSequence(1000)]
     public class BehaviorTreeBuildParameters : IDataBuild
     {
-        public void Build(IBuildContainer buildContainer, Action onFinished)
+        public void Build(IBuildContainer buildContainer, IBuildArgs buildArgs, Action onFinished)
         {
             BehaviorTreeBuildContainer container = buildContainer as BehaviorTreeBuildContainer;
+            BehaviorTreeBuildArgs behaviorTreeBuildArgs = buildArgs as BehaviorTreeBuildArgs;
 
-            if (container.editorAsset.editorParametersManage == null) container.variablesManage = new VariablesManage();
+            if (behaviorTreeBuildArgs.behaviorTreeAsset.editorParametersManage == null) container.variablesManage = new VariablesManage();
             else
             {
-                VariablesManage rootVariablesManage = container.editorAsset.editorParametersManage.ToParametersManage();
+                VariablesManage rootVariablesManage = behaviorTreeBuildArgs.behaviorTreeAsset.editorParametersManage.ToParametersManage();
                 container.variablesManage = rootVariablesManage;
             }
 
