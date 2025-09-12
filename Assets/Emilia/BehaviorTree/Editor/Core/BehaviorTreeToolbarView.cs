@@ -30,10 +30,10 @@ namespace Emilia.BehaviorTree.Editor
         {
             EditorBehaviorTreeAsset behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
 
-            EditorParametersManage editorParametersManage = behaviorTreeAsset.editorParametersManage;
+            EditorParametersManager editorParametersManage = behaviorTreeAsset.editorParametersManage;
             if (editorParametersManage == null)
             {
-                editorParametersManage = behaviorTreeAsset.editorParametersManage = ScriptableObject.CreateInstance<EditorParametersManage>();
+                editorParametersManage = behaviorTreeAsset.editorParametersManage = ScriptableObject.CreateInstance<EditorParametersManager>();
                 EditorAssetKit.SaveAssetIntoObject(editorParametersManage, behaviorTreeAsset);
             }
 

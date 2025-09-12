@@ -8,7 +8,7 @@ namespace Emilia.BehaviorTree.Editor
     public class BehaviorTreeBuildContainer : BuildContainer
     {
         public Dictionary<int, string> bindMap { get; set; } = new Dictionary<int, string>();
-        public VariablesManage variablesManage { get; set; }
+        public VariablesManager variablesManage { get; set; }
         public List<NodeAsset> nodeAssets { get; set; }
         public int entryNodeId { get; set; }
 

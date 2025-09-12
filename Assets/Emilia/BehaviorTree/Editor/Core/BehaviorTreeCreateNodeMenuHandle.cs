@@ -18,25 +18,25 @@ namespace Emilia.BehaviorTree.Editor
             base.InitializeCache(graphView, createNodeHandles);
             behaviorTreeAsset = graphView.graphAsset as EditorBehaviorTreeAsset;
 
-            FilterCreateNodeHandles(graphView);
-            AddRoot(graphView);
+            FilterCreateNodeHandles(createNodeHandles);
+            AddRoot(createNodeHandles);
         }
 
-        private void AddRoot(EditorGraphView graphView)
+        private void AddRoot(List<ICreateNodeHandle> createNodeHandles)
         {
             CreateNodeHandle rootNodeHandle = new CreateNodeHandle();
             rootNodeHandle.editorNodeType = typeof(EditorRootNodeAsset);
             rootNodeHandle.path = "入口";
 
-            graphView.createNodeMenu.createNodeHandleCacheList.Add(rootNodeHandle);
+            createNodeHandles.Add(rootNodeHandle);
         }
 
-        private void FilterCreateNodeHandles(EditorGraphView graphView)
+        private void FilterCreateNodeHandles(List<ICreateNodeHandle> createNodeHandles)
         {
-            int cacheAmount = graphView.createNodeMenu.createNodeHandleCacheList.Count;
+            int cacheAmount = createNodeHandles.Count;
             for (int i = cacheAmount - 1; i >= 0; i--)
             {
-                ICreateNodeHandle createNodeHandle = graphView.createNodeMenu.createNodeHandleCacheList[i];
+                ICreateNodeHandle createNodeHandle = createNodeHandles[i];
 
                 object nodeData = createNodeHandle.nodeData;
                 if (nodeData == null) continue;
@@ -44,11 +44,11 @@ namespace Emilia.BehaviorTree.Editor
                 NodeTagAttribute[] nodeTagAttributes = nodeData.GetType().GetCustomAttributes<NodeTagAttribute>(true).ToArray();
                 if (nodeTagAttributes.Any() == false)
                 {
-                    graphView.createNodeMenu.createNodeHandleCacheList.RemoveAt(i);
+                    createNodeHandles.RemoveAt(i);
                     continue;
                 }
 
-                if (IsContain(nodeTagAttributes) == false) graphView.createNodeMenu.createNodeHandleCacheList.RemoveAt(i);
+                if (IsContain(nodeTagAttributes) == false) createNodeHandles.RemoveAt(i);
             }
         }
 

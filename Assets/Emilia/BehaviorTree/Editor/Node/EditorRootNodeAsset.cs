@@ -19,7 +19,7 @@ namespace Emilia.BehaviorTree.Editor
         {
             List<EditorPortInfo> portInfos = new List<EditorPortInfo>();
 
-            UniversalEditorPortInfo output = new UniversalEditorPortInfo();
+            EditorPortInfo output = new EditorPortInfo();
             output.id = OutputPortName;
             output.direction = EditorPortDirection.Output;
             output.orientation = EditorOrientation.Vertical;

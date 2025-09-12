@@ -22,7 +22,7 @@ namespace Emilia.BehaviorTree
         private List<NodeAsset> _nodes;
 
         [SerializeField]
-        private VariablesManage _variablesManage;
+        private VariablesManager _variablesManage;
 
         [SerializeField]
         private object _userData;
@@ -31,7 +31,7 @@ namespace Emilia.BehaviorTree
         public string description => this._description;
         public int entryId => this._entryId;
         public IReadOnlyList<NodeAsset> nodes => this._nodes;
-        public VariablesManage variablesManage => this._variablesManage;
+        public VariablesManager variablesManage => this._variablesManage;
 
         public object userData
         {
@@ -39,7 +39,7 @@ namespace Emilia.BehaviorTree
             internal set => this._userData = value;
         }
 
-        public BehaviorTreeAsset(string id, string description, int entryId, List<NodeAsset> nodes, VariablesManage variablesManage)
+        public BehaviorTreeAsset(string id, string description, int entryId, List<NodeAsset> nodes, VariablesManager variablesManage)
         {
             this._id = id;
             this._description = description;
