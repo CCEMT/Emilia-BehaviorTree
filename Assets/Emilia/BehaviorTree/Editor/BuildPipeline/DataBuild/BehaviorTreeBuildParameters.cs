@@ -12,10 +12,10 @@ namespace Emilia.BehaviorTree.Editor
             BehaviorTreeBuildContainer container = buildContainer as BehaviorTreeBuildContainer;
             BehaviorTreeBuildArgs behaviorTreeBuildArgs = buildArgs as BehaviorTreeBuildArgs;
 
-            if (behaviorTreeBuildArgs.behaviorTreeAsset.editorParametersManage == null) container.variablesManage = new VariablesManage();
+            if (behaviorTreeBuildArgs.behaviorTreeAsset.editorParametersManage == null) container.variablesManage = new VariablesManager();
             else
             {
-                VariablesManage rootVariablesManage = behaviorTreeBuildArgs.behaviorTreeAsset.editorParametersManage.ToParametersManage();
+                VariablesManager rootVariablesManage = behaviorTreeBuildArgs.behaviorTreeAsset.editorParametersManage.ToParametersManage();
                 container.variablesManage = rootVariablesManage;
             }
 

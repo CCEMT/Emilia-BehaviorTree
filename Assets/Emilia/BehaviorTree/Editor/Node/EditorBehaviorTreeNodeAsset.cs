@@ -44,6 +44,16 @@ namespace Emilia.BehaviorTree.Editor
         protected EditorBehaviorTreeNodeAsset behaviorTreeNodeAsset;
 
         public object openScriptObject => behaviorTreeNodeAsset.userData;
+        
+        public override bool expanded
+        {
+            get=>base.expanded;
+            set
+            {
+                base.expanded = value;
+                SetOutputNodeVisible(value);
+            }
+        }
 
         public override void Initialize(EditorGraphView graphView, EditorNodeAsset asset)
         {
@@ -60,8 +70,8 @@ namespace Emilia.BehaviorTree.Editor
         public override void CollectElements(HashSet<GraphElement> collectedElementSet, Func<GraphElement, bool> conditionFunc)
         {
             base.CollectElements(collectedElementSet, conditionFunc);
-            if (this.behaviorTreeNodeAsset.isFold) return;
-            List<EditorNodeAsset> allOutputNodeAsset = graphView.graphAsset.GetAllOutputNodes(asset);
+            if (this.behaviorTreeNodeAsset.isExpanded) return;
+            List<EditorNodeAsset> allOutputNodeAsset = asset.GetLogicalOutputNodes();
             int outputNodeCount = allOutputNodeAsset.Count;
             for (int i = 0; i < outputNodeCount; i++)
             {
@@ -72,10 +82,7 @@ namespace Emilia.BehaviorTree.Editor
             }
         }
 
-        public override void UpdateFoldState()
-        {
-            SetOutputNodeVisible(behaviorTreeNodeAsset.isFold);
-        }
+
 
         private void SetOutputNodeVisible(bool visible)
         {
@@ -97,7 +104,7 @@ namespace Emilia.BehaviorTree.Editor
                 outputEdgeView.edgeElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
             }
 
-            List<EditorNodeAsset> outputNodes = graphView.graphAsset.GetOutputNodes(asset);
+            List<EditorNodeAsset> outputNodes = asset.GetLogicalOutputNodes();
             int outputNodeCount = outputNodes.Count;
             for (int i = 0; i < outputNodeCount; i++)
             {

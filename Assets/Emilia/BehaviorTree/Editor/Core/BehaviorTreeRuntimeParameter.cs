@@ -22,7 +22,7 @@ namespace Emilia.BehaviorTree.Editor
                 _runtimeUserVariables.Clear();
                 if (this.runner == null) return this._runtimeUserVariables;
 
-                foreach (var variablePair in this.runner.behaviorTree.blackboard.variablesManage.variableMap)
+                foreach (var variablePair in this.runner.behaviorTree.blackboard.variablesManager.variableMap)
                 {
                     EditorParameter editorParameter = editorBehaviorTreeAsset.editorParametersManage.parameters.Find((x) => x.key == variablePair.Key);
                     if (editorParameter == null) continue;
