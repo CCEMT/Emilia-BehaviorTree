@@ -11,7 +11,6 @@ namespace Emilia.BehaviorTree.Editor
     [EditorHandle(typeof(EditorBehaviorTreeAsset))]
     public class BehaviorTreeGraphHandle : UniversalGraphHandle
     {
-        private EditorGraphView editorGraphView;
         private EditorBehaviorTreeAsset editorBehaviorTreeAsset;
         private EditorBehaviorTreeRunner debugRunner;
         private List<int> runningNodes = new List<int>();

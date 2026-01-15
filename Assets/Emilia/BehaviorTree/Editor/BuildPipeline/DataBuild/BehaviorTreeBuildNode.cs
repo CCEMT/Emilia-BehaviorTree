@@ -17,13 +17,14 @@ namespace Emilia.BehaviorTree.Editor
             BehaviorTreeBuildArgs behaviorTreeBuildArgs = buildArgs as BehaviorTreeBuildArgs;
 
             List<EditorBehaviorTreeNodeAsset> allNodes = behaviorTreeBuildArgs.behaviorTreeAsset.nodes.OfType<EditorBehaviorTreeNodeAsset>().ToList();
+            foreach (EditorBehaviorTreeNodeAsset node in allNodes) node.graphAsset = behaviorTreeBuildArgs.behaviorTreeAsset;
 
-            Dictionary<int, EditorBehaviorTreeNodeAsset> nodeByRuntimeIdMap = new Dictionary<int, EditorBehaviorTreeNodeAsset>();
-            Dictionary<string, NodeAsset> nodeByEditorIdMap = new Dictionary<string, NodeAsset>();
+            Dictionary<int, EditorBehaviorTreeNodeAsset> nodeByRuntimeIdMap = new();
+            Dictionary<string, NodeAsset> nodeByEditorIdMap = new();
 
-            List<NodeAsset> nodeAssets = new List<NodeAsset>();
+            List<NodeAsset> nodeAssets = new();
 
-            Queue<EditorBehaviorTreeNodeAsset> nodeQueue = new Queue<EditorBehaviorTreeNodeAsset>();
+            Queue<EditorBehaviorTreeNodeAsset> nodeQueue = new();
             EditorRootNodeAsset rootNode = allNodes.OfType<EditorRootNodeAsset>().FirstOrDefault();
             EditorBehaviorTreeNodeAsset rootOutputNode = rootNode.GetLogicalOutputNodes().FirstOrDefault() as EditorBehaviorTreeNodeAsset;
             nodeQueue.Enqueue(rootOutputNode);
@@ -58,7 +59,7 @@ namespace Emilia.BehaviorTree.Editor
                 container.bindMap[node.id] = editorNode.id;
             }
 
-            List<NodeAsset> behaviorTreeNodeAssets = new List<NodeAsset>();
+            List<NodeAsset> behaviorTreeNodeAssets = new();
 
             int nodeAssetsCount = nodeAssets.Count;
             for (int i = nodeAssetsCount - 1; i >= 0; i--)
