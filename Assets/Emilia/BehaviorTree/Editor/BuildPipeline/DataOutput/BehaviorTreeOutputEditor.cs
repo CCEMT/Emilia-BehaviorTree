@@ -16,8 +16,7 @@ namespace Emilia.BehaviorTree.Editor
             behaviorTreeBuildArgs.behaviorTreeAsset.cache = container.asset;
             behaviorTreeBuildArgs.behaviorTreeAsset.cacheBindMap = container.bindMap;
 
-            behaviorTreeBuildArgs.behaviorTreeAsset.SetDirtyAll();
-            if (behaviorTreeBuildArgs.isSaveAsset) AssetDatabase.SaveAssets();
+            behaviorTreeBuildArgs.behaviorTreeAsset.OnlySaveAll();
 
             onFinished.Invoke();
         }
