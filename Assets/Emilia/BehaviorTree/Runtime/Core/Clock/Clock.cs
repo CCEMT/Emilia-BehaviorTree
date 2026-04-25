@@ -68,6 +68,8 @@ namespace Emilia.BehaviorTree
         /// </summary>
         public void RemoveTimer(Timer timer)
         {
+            if (timer == null) return;
+            if (removeTimerList.Contains(timer)) return;
             removeTimerList.Add(timer);
         }
 
@@ -119,7 +121,7 @@ namespace Emilia.BehaviorTree
 
                 timer.action.Invoke();
 
-                if (timer.loop == 0) this.removeTimerList.Add(timer);
+                if (timer.loop == 0) RemoveTimer(timer);
                 else if (timer.loop > 0)
                 {
                     timer.loop--;
@@ -153,8 +155,11 @@ namespace Emilia.BehaviorTree
             {
                 Timer timer = removeTimerList[i];
 
-                timerList.Remove(timer);
-                timer.Release();
+                bool removed = false;
+                while (timerList.Remove(timer)) removed = true;
+                while (addTimerList.Remove(timer)) removed = true;
+
+                if (removed) timer.Release();
             }
 
             removeUpdateEvent.Clear();
