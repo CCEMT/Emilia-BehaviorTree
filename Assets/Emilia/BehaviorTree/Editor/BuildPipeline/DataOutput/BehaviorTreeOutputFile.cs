@@ -24,6 +24,7 @@ namespace Emilia.BehaviorTree.Editor
 
             string dataPathNoAssets = Directory.GetParent(Application.dataPath).ToString();
             string path = $"{dataPathNoAssets}/{args.outputPath}/{args.behaviorTreeAsset.name}.bytes";
+            string unityPath = $"{args.outputPath}/{args.behaviorTreeAsset.name}.bytes";
 
             System.Threading.Tasks.Task.Run(() => {
                 try
@@ -43,7 +44,7 @@ namespace Emilia.BehaviorTree.Editor
 
             void RefreshAssetDatabase()
             {
-                AssetDatabase.ImportAsset(path);
+                AssetDatabase.ImportAsset(unityPath);
                 args.generateFileCallback?.Invoke();
             }
         }
