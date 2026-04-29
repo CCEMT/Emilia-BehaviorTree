@@ -16,7 +16,9 @@ namespace Emilia.BehaviorTree
 
         protected override void OnStart()
         {
-            timer = tree.clock.AddTimer(new FloatTimeInfo(asset.seconds), OnTimerEnd);
+            FloatTimeInfo endTime = new(this.asset.seconds);
+            endTime.Add(tree.clock.time);
+            timer = tree.clock.AddTimer(endTime, OnTimerEnd);
         }
 
         protected override void OnStop()
