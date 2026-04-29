@@ -6,10 +6,10 @@ namespace Emilia.BehaviorTree
 {
     public enum ParallelPolicy
     {
-        [LabelText("一个（成功/失败）就返回（成功/失败）")]
+        [LabelText("一个（成功|失败）就返回（成功|失败）")]
         One,
 
-        [LabelText("全部（成功/失败）才返回（成功/失败）")]
+        [LabelText("全部（成功|失败）才返回（成功|失败）")]
         All,
     }
 
