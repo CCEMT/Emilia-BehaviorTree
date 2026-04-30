@@ -48,7 +48,19 @@ namespace Emilia.BehaviorTree
         {
             if (this.currentIndex != -1) children[this.randomizedOrder[this.currentIndex]].Stop();
         }
-
+        
+        protected override void OnChildStop(Node child, bool result)
+        {
+            if (result)
+            {
+                ProcessChildren();
+            }
+            else
+            {
+                Finish(false);
+            }
+        }
+        
         private void ProcessChildren()
         {
             currentIndex++;
