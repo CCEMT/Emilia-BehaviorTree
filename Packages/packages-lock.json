@@ -1,20 +1,18 @@
 {
   "dependencies": {
     "com.emilia.kit": {
-      "version": "https://github.com/CCEMT/Emilia-Kit.git?path=Assets/Emilia/Kit",
+      "version": "file:com.emilia.kit@99408f173a",
       "depth": 0,
-      "source": "git",
+      "source": "embedded",
       "dependencies": {
         "com.unity.editorcoroutines": "1.0.0"
-      },
-      "hash": "99408f173a14a39531c273511fb5ba918d11e545"
+      }
     },
     "com.emilia.node.editor": {
-      "version": "https://github.com/CCEMT/Emilia-NodeEditor.git?path=Assets/Emilia/Node.Editor",
+      "version": "file:com.emilia.node.editor@dbfe7bd48d",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "dbfe7bd48ddb6d2c672ba9df552ce30671a94a2c"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.editorcoroutines": {
       "version": "1.0.0",

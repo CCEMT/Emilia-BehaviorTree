@@ -75,8 +75,9 @@ namespace Emilia.BehaviorTree.Editor
         protected override void RebuildPortView()
         {
             base.RebuildPortView();
-            EnsureInputPortViewsCreated();
+            EnsureBehaviorTreePortViewsCreated();
             ShowInputPorts();
+            SetOutputPortsVisible(visibleByParent && expanded);
         }
 
         public override void CollectElements(HashSet<GraphElement> collectedElementSet, Func<GraphElement, bool> conditionFunc)
@@ -149,20 +150,29 @@ namespace Emilia.BehaviorTree.Editor
             }
         }
 
-        private void EnsureInputPortViewsCreated()
+        private void EnsureBehaviorTreePortViewsCreated()
         {
             List<EditorPortInfo> portInfos = CollectStaticPortAssets();
             portInfos.Sort((a, b) => a.order.CompareTo(b.order));
 
             int inputIndex = 0;
+            int outputIndex = 0;
             int portInfoCount = portInfos.Count;
             for (int i = 0; i < portInfoCount; i++)
             {
                 EditorPortInfo portInfo = portInfos[i];
-                if (portInfo.direction != EditorPortDirection.Input) continue;
+                if (portInfo.direction == EditorPortDirection.Input)
+                {
+                    if (GetPortView(portInfo.id) == null) AddPortView(inputIndex, portInfo);
+                    inputIndex++;
+                    continue;
+                }
 
-                if (GetPortView(portInfo.id) == null) AddPortView(inputIndex, portInfo);
-                inputIndex++;
+                if (portInfo.direction == EditorPortDirection.Output)
+                {
+                    if (GetPortView(portInfo.id) == null) AddPortView(outputIndex, portInfo);
+                    outputIndex++;
+                }
             }
         }
 
@@ -178,13 +188,21 @@ namespace Emilia.BehaviorTree.Editor
 
         private void SetOutputPortsVisible(bool visible)
         {
+            if (visible)
+            {
+                ForceVisible(nodeBottomContainer);
+                ForceVisible(portNodeBottomContainer);
+                ForceVisible(verticalOutputContainer);
+            }
+
             int portCount = portViews.Count;
             for (int i = 0; i < portCount; i++)
             {
                 IEditorPortView port = portViews[i];
                 if (port.portDirection == EditorPortDirection.Output)
                 {
-                    port.portElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+                    if (visible) ForceVisible(port.portElement);
+                    else port.portElement.style.display = DisplayStyle.None;
                 }
             }
         }
