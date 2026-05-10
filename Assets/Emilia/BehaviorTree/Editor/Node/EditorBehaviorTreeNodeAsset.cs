@@ -40,18 +40,22 @@ namespace Emilia.BehaviorTree.Editor
     {
         public const string InputPortName = "Input";
         public const string OutputPortName = "Output";
+        private const int OutputVisibilitySyncFrameCount = 3;
 
         protected EditorBehaviorTreeNodeAsset behaviorTreeNodeAsset;
+        private bool isOutputVisibilitySyncRegistered;
+        private int remainingOutputVisibilitySyncFrames;
+        private bool visibleByParent = true;
 
         public object openScriptObject => behaviorTreeNodeAsset.userData;
-        
+
         public override bool expanded
         {
-            get=>base.expanded;
+            get => base.expanded;
             set
             {
                 base.expanded = value;
-                SetOutputNodeVisible(value);
+                RegisterOutputVisibilitySync();
             }
         }
 
@@ -59,6 +63,7 @@ namespace Emilia.BehaviorTree.Editor
         {
             behaviorTreeNodeAsset = asset as EditorBehaviorTreeNodeAsset;
             base.Initialize(graphView, asset);
+            RegisterOutputVisibilitySync();
         }
 
         protected override void InitializeNodeView()
@@ -67,57 +72,217 @@ namespace Emilia.BehaviorTree.Editor
             SetNodeColor(behaviorTreeNodeAsset.userData);
         }
 
+        protected override void RebuildPortView()
+        {
+            base.RebuildPortView();
+            EnsureInputPortViewsCreated();
+            ShowInputPorts();
+        }
+
         public override void CollectElements(HashSet<GraphElement> collectedElementSet, Func<GraphElement, bool> conditionFunc)
         {
             base.CollectElements(collectedElementSet, conditionFunc);
             if (this.behaviorTreeNodeAsset.isExpanded) return;
-            List<EditorNodeAsset> allOutputNodeAsset = asset.GetLogicalOutputNodes();
-            int outputNodeCount = allOutputNodeAsset.Count;
-            for (int i = 0; i < outputNodeCount; i++)
+
+            HashSet<string> visitedNodeIds = new() {asset.id};
+            CollectOutputNodeElements(asset.id, collectedElementSet, visitedNodeIds);
+        }
+
+        private void CollectOutputNodeElements(string nodeId, HashSet<GraphElement> collectedElementSet, HashSet<string> visitedNodeIds)
+        {
+            if (graphView?.graphAsset == null) return;
+
+            IReadOnlyList<EditorEdgeAsset> edges = graphView.graphAsset.edges;
+            int edgeCount = edges.Count;
+            for (int i = 0; i < edgeCount; i++)
             {
-                EditorNodeAsset outputNodeAsset = allOutputNodeAsset[i];
+                EditorEdgeAsset edge = edges[i];
+                if (edge.outputNodeId != nodeId) continue;
+                if (visitedNodeIds.Add(edge.inputNodeId) == false) continue;
+
+                EditorNodeAsset outputNodeAsset = graphView.graphAsset.nodeMap.GetValueOrDefault(edge.inputNodeId);
+                if (outputNodeAsset == null) continue;
+
                 IEditorNodeView outputNodeView = graphView.graphElementCache.nodeViewById.GetValueOrDefault(outputNodeAsset.id);
-                if (outputNodeView == null) continue;
-                collectedElementSet.Add(outputNodeView.element);
+                if (outputNodeView != null) collectedElementSet.Add(outputNodeView.element);
+
+                CollectOutputNodeElements(outputNodeAsset.id, collectedElementSet, visitedNodeIds);
             }
         }
 
+        public override void OnValueChanged(bool isSilent = false)
+        {
+            base.OnValueChanged(isSilent);
+            RegisterOutputVisibilitySync();
+        }
 
+        public override void Dispose()
+        {
+            UnregisterOutputVisibilitySync();
+            base.Dispose();
+        }
 
-        private void SetOutputNodeVisible(bool visible)
+        private void SyncOutputVisibility(bool visible, HashSet<string> visitedNodeIds = null)
+        {
+            ShowInputPorts();
+            SetOutputPortsVisible(visible);
+
+            if (IsGraphAssetNode() == false) return;
+
+            if (visitedNodeIds == null) visitedNodeIds = new HashSet<string> {asset.id};
+            SetOutputSubtreeVisible(asset.id, visible, visitedNodeIds);
+        }
+
+        private void ShowInputPorts()
+        {
+            ForceVisible(nodeTopContainer);
+            ForceVisible(portNodeTopContainer);
+            ForceVisible(verticalInputContainer);
+
+            int portCount = portViews.Count;
+            for (int i = 0; i < portCount; i++)
+            {
+                IEditorPortView port = portViews[i];
+                if (port.portDirection != EditorPortDirection.Input) continue;
+
+                ForceVisible(port.portElement);
+            }
+        }
+
+        private void EnsureInputPortViewsCreated()
+        {
+            List<EditorPortInfo> portInfos = CollectStaticPortAssets();
+            portInfos.Sort((a, b) => a.order.CompareTo(b.order));
+
+            int inputIndex = 0;
+            int portInfoCount = portInfos.Count;
+            for (int i = 0; i < portInfoCount; i++)
+            {
+                EditorPortInfo portInfo = portInfos[i];
+                if (portInfo.direction != EditorPortDirection.Input) continue;
+
+                if (GetPortView(portInfo.id) == null) AddPortView(inputIndex, portInfo);
+                inputIndex++;
+            }
+        }
+
+        private static void ForceVisible(VisualElement element)
+        {
+            if (element == null) return;
+
+            element.visible = true;
+            element.style.display = DisplayStyle.Flex;
+            element.style.visibility = Visibility.Visible;
+            element.RemoveFromClassList("hidden");
+        }
+
+        private void SetOutputPortsVisible(bool visible)
         {
             int portCount = portViews.Count;
             for (int i = 0; i < portCount; i++)
             {
                 IEditorPortView port = portViews[i];
-                if (port.portDirection == EditorPortDirection.Output) port.portElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+                if (port.portDirection == EditorPortDirection.Output)
+                {
+                    port.portElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+                }
             }
+        }
 
-            List<EditorEdgeAsset> outputEdges = graphView.graphAsset.GetOutputEdges(asset);
-            int outputEdgeCount = outputEdges.Count;
-            for (int i = 0; i < outputEdgeCount; i++)
+        private void SetOutputSubtreeVisible(string nodeId, bool visible, HashSet<string> visitedNodeIds)
+        {
+            IReadOnlyList<EditorEdgeAsset> edges = graphView.graphAsset.edges;
+            int edgeCount = edges.Count;
+            for (int i = 0; i < edgeCount; i++)
             {
-                EditorEdgeAsset outputEdge = outputEdges[i];
-                IEditorEdgeView outputEdgeView = graphView.graphElementCache.edgeViewById.GetValueOrDefault(outputEdge.id);
-                if (outputEdgeView == null) continue;
+                EditorEdgeAsset outputEdge = edges[i];
+                if (outputEdge.outputNodeId != nodeId) continue;
 
-                outputEdgeView.edgeElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-            }
+                SetOutputEdgeVisible(outputEdge, visible);
 
-            List<EditorNodeAsset> outputNodes = asset.GetLogicalOutputNodes();
-            int outputNodeCount = outputNodes.Count;
-            for (int i = 0; i < outputNodeCount; i++)
-            {
-                EditorNodeAsset outputNode = outputNodes[i];
+                if (visitedNodeIds.Add(outputEdge.inputNodeId) == false) continue;
 
+                EditorNodeAsset outputNode = graphView.graphAsset.nodeMap.GetValueOrDefault(outputEdge.inputNodeId);
+                if (outputNode == null) continue;
                 IEditorNodeView outputNodeView = graphView.graphElementCache.nodeViewById.GetValueOrDefault(outputNode.id);
-                if (outputNodeView == null) continue;
 
-                outputNodeView.element.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+                if (outputNodeView != null)
+                {
+                    outputNodeView.element.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
 
-                UniversalEditorNodeView universalOutputNodeView = outputNodeView as UniversalEditorNodeView;
-                if (universalOutputNodeView != null) universalOutputNodeView.expanded = visible;
+                    if (outputNodeView is EditorBehaviorTreeNodeView behaviorTreeOutputNodeView)
+                    {
+                        behaviorTreeOutputNodeView.SetVisibleByParent(visible, visitedNodeIds);
+                        continue;
+                    }
+                }
+
+                SetOutputSubtreeVisible(outputNode.id, visible, visitedNodeIds);
             }
+        }
+
+        private void SetVisibleByParent(bool visible, HashSet<string> visitedNodeIds)
+        {
+            visibleByParent = visible;
+            element.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+            ShowInputPorts();
+            SyncOutputVisibility(visible && expanded, visitedNodeIds);
+        }
+
+        private void SetOutputEdgeVisible(EditorEdgeAsset edgeAsset, bool visible)
+        {
+            IEditorEdgeView outputEdgeView = graphView.graphElementCache.edgeViewById.GetValueOrDefault(edgeAsset.id);
+            if (outputEdgeView == null) return;
+
+            outputEdgeView.edgeElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private void RegisterOutputVisibilitySync()
+        {
+            if (IsGraphAssetNode() == false) return;
+
+            SyncOutputVisibility(visibleByParent && expanded);
+
+            remainingOutputVisibilitySyncFrames = graphView.isInitialized ? OutputVisibilitySyncFrameCount : 0;
+            if (isOutputVisibilitySyncRegistered) return;
+
+            isOutputVisibilitySyncRegistered = true;
+            graphView.onUpdate += SyncOutputVisibilityOnUpdate;
+        }
+
+        private void SyncOutputVisibilityOnUpdate()
+        {
+            if (IsGraphAssetNode() == false)
+            {
+                UnregisterOutputVisibilitySync();
+                return;
+            }
+
+            SyncOutputVisibility(visibleByParent && expanded);
+
+            if (graphView.isInitialized == false) return;
+            if (visibleByParent && expanded == false) return;
+
+            remainingOutputVisibilitySyncFrames--;
+            if (remainingOutputVisibilitySyncFrames > 0) return;
+
+            UnregisterOutputVisibilitySync();
+        }
+
+        private void UnregisterOutputVisibilitySync()
+        {
+            if (isOutputVisibilitySyncRegistered == false) return;
+
+            graphView.onUpdate -= SyncOutputVisibilityOnUpdate;
+            isOutputVisibilitySyncRegistered = false;
+        }
+
+        private bool IsGraphAssetNode()
+        {
+            if (graphView?.graphAsset == null) return false;
+            if (asset == null) return false;
+
+            return graphView.graphAsset.nodeMap.ContainsKey(asset.id);
         }
     }
 }
