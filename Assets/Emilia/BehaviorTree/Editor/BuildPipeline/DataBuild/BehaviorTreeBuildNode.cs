@@ -26,7 +26,7 @@ namespace Emilia.BehaviorTree.Editor
 
             Queue<EditorBehaviorTreeNodeAsset> nodeQueue = new();
             EditorRootNodeAsset rootNode = allNodes.OfType<EditorRootNodeAsset>().FirstOrDefault();
-            EditorBehaviorTreeNodeAsset rootOutputNode = rootNode.GetLogicalOutputNodes().FirstOrDefault() as EditorBehaviorTreeNodeAsset;
+            EditorBehaviorTreeNodeAsset rootOutputNode = rootNode.GetLogicalOutputNodes().FirstOrDefault().inputNode as EditorBehaviorTreeNodeAsset;
             nodeQueue.Enqueue(rootOutputNode);
 
             int id = 0;
@@ -45,13 +45,13 @@ namespace Emilia.BehaviorTree.Editor
                 nodeByEditorIdMap[editorNode.id] = node;
                 nodeAssets.Add(node);
 
-                List<EditorNodeAsset> outputNodes = editorNode.GetLogicalOutputNodes();
-                outputNodes.Sort((a, b) => a.position.x.CompareTo(b.position.x));
+                List<EditorLogicalConnection> outputNodes = editorNode.GetLogicalOutputNodes();
+                outputNodes.Sort((a, b) => a.inputNode.position.x.CompareTo(b.inputNode.position.x));
 
                 int outputNodeCount = outputNodes.Count;
                 for (int i = 0; i < outputNodeCount; i++)
                 {
-                    EditorNodeAsset outputNode = outputNodes[i];
+                    EditorNodeAsset outputNode = outputNodes[i].inputNode;
                     EditorBehaviorTreeNodeAsset outputNodeAsset = outputNode as EditorBehaviorTreeNodeAsset;
                     nodeQueue.Enqueue(outputNodeAsset);
                 }
@@ -70,13 +70,13 @@ namespace Emilia.BehaviorTree.Editor
                 List<int> children = node.childrenIds as List<int>;
                 children.Clear();
 
-                List<EditorNodeAsset> outputNodes = editorNode.GetLogicalOutputNodes();
-                outputNodes.Sort((a, b) => a.position.x.CompareTo(b.position.x));
+                List<EditorLogicalConnection> outputNodes = editorNode.GetLogicalOutputNodes();
+                outputNodes.Sort((a, b) => a.inputNode.position.x.CompareTo(b.inputNode.position.x));
 
                 int outputNodeCount = outputNodes.Count;
                 for (int j = 0; j < outputNodeCount; j++)
                 {
-                    EditorNodeAsset outputNode = outputNodes[j];
+                    EditorNodeAsset outputNode = outputNodes[j].inputNode;
                     NodeAsset outputNodeAsset = nodeByEditorIdMap.GetValueOrDefault(outputNode.id);
                     children.Add(outputNodeAsset.id);
                 }
