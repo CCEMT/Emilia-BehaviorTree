@@ -73,9 +73,9 @@ MonoBehaviour:
     y: 377.00003
     width: 95
     height: 76
+  _isExpanded: 1
   _graphAsset: {fileID: 0}
   _displayName: 
-  _isFold: 1
 --- !u!114 &-8161150730312928665
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -276,9 +276,9 @@ MonoBehaviour:
     y: 558
     width: 119
     height: 60
+  _isExpanded: 1
   _graphAsset: {fileID: 0}
   _displayName: 
-  _isFold: 1
 --- !u!114 &-3628998219029799235
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -364,9 +364,9 @@ MonoBehaviour:
     y: 640
     width: 71
     height: 60
+  _isExpanded: 0
   _graphAsset: {fileID: 0}
   _displayName: 
-  _isFold: 1
 --- !u!114 &-2031756073194570353
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1086,7 +1086,7 @@ MonoBehaviour:
       Data: 
     - Name: _variablesManage
       Entry: 7
-      Data: 27|Emilia.Variables.VariablesManage, Emilia.Variable
+      Data: 27|Emilia.Variables.VariablesManager, Emilia.Variable
     - Name: _variableMap
       Entry: 7
       Data: 28|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Emilia.Variables.Variable,
@@ -1349,9 +1349,9 @@ MonoBehaviour:
     y: 558
     width: 95
     height: 60
+  _isExpanded: 1
   _graphAsset: {fileID: 0}
   _displayName: 
-  _isFold: 1
 --- !u!114 &1017669911687089964
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1431,9 +1431,9 @@ MonoBehaviour:
     y: 238.73026
     width: 95
     height: 76
+  _isExpanded: 1
   _graphAsset: {fileID: 0}
   _displayName: 
-  _isFold: 1
 --- !u!114 &1385330651157660354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1483,9 +1483,9 @@ MonoBehaviour:
     y: 377
     width: 95
     height: 76
+  _isExpanded: 1
   _graphAsset: {fileID: 0}
   _displayName: 
-  _isFold: 1
 --- !u!114 &1787779770271675131
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1517,9 +1517,9 @@ MonoBehaviour:
     y: 148
     width: 71
     height: 60
+  _isExpanded: 1
   _graphAsset: {fileID: 0}
   _displayName: 
-  _isFold: 1
 --- !u!114 &2450081580885578089
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1599,9 +1599,9 @@ MonoBehaviour:
     y: 511.68695
     width: 95
     height: 76
+  _isExpanded: 1
   _graphAsset: {fileID: 0}
   _displayName: 
-  _isFold: 1
 --- !u!114 &5285275268653261484
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1757,9 +1757,9 @@ MonoBehaviour:
     y: 640
     width: 95
     height: 60
+  _isExpanded: 0
   _graphAsset: {fileID: 0}
   _displayName: 
-  _isFold: 1
 --- !u!114 &7057010390911319327
 MonoBehaviour:
   m_ObjectHideFlags: 1

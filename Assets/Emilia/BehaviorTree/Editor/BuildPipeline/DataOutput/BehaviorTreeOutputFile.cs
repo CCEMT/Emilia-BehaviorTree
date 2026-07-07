@@ -29,6 +29,9 @@ namespace Emilia.BehaviorTree.Editor
             System.Threading.Tasks.Task.Run(() => {
                 try
                 {
+                    string directory = Path.GetDirectoryName(path);
+                    if (string.IsNullOrEmpty(directory) == false && Directory.Exists(directory) == false) Directory.CreateDirectory(directory);
+                    
                     if (File.Exists(path)) File.Delete(path);
                     byte[] bytes = TagSerializationUtility.IgnoreTagSerializeValue(container.asset, DataFormat.Binary, SerializeTagDefine.DefaultIgnoreTag);
                     File.WriteAllBytes(path, bytes);
