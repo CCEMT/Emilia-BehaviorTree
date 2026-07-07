@@ -7,6 +7,7 @@ using Emilia.Node.Universal.Editor;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Emilia.BehaviorTree.Editor
@@ -32,6 +33,12 @@ namespace Emilia.BehaviorTree.Editor
                 OperateMenuUtility.PathToNameAndCategory(createNodeMenu.path, out string titleText, out string _);
                 return titleText;
             }
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (string.IsNullOrEmpty(id)) isExpanded = true;
         }
     }
 
@@ -69,7 +76,38 @@ namespace Emilia.BehaviorTree.Editor
         protected override void InitializeNodeView()
         {
             base.InitializeNodeView();
-            SetNodeColor(behaviorTreeNodeAsset.userData);
+            ApplyBehaviorTreeNodeColor(behaviorTreeNodeAsset.userData);
+        }
+
+        protected virtual bool TryGetDefaultNodeColor(out Color color)
+        {
+            color = default;
+            return false;
+        }
+
+        protected static Color CreateNodeColor(float r, float g, float b)
+        {
+            return new Color(r, g, b);
+        }
+
+        private void ApplyBehaviorTreeNodeColor(object nodeAsset)
+        {
+            if (TryGetAttributeNodeColor(nodeAsset, out Color color) == false && TryGetDefaultNodeColor(out color) == false) return;
+
+            SetColor(color);
+        }
+
+        private static bool TryGetAttributeNodeColor(object nodeAsset, out Color color)
+        {
+            color = default;
+
+            if (nodeAsset == null) return false;
+
+            NodeColorAttribute nodeColor = nodeAsset.GetType().GetCustomAttribute<NodeColorAttribute>(true);
+            if (nodeColor == null) return false;
+
+            color = new Color(nodeColor.r, nodeColor.g, nodeColor.b);
+            return true;
         }
 
         protected override void RebuildPortView()

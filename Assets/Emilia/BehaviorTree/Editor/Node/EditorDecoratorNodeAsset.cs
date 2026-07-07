@@ -3,6 +3,7 @@ using Emilia.Node.Attributes;
 using Emilia.Node.Editor;
 using Emilia.Node.Universal.Editor;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace Emilia.BehaviorTree.Editor
 {
@@ -12,6 +13,12 @@ namespace Emilia.BehaviorTree.Editor
     [EditorNode(typeof(EditorDecoratorNodeAsset))]
     public class EditorDecoratorNodeView : EditorBehaviorTreeNodeView
     {
+        protected override bool TryGetDefaultNodeColor(out Color color)
+        {
+            color = CreateNodeColor(0.949f, 0.600f, 0.290f);
+            return true;
+        }
+
         public override List<EditorPortInfo> CollectStaticPortAssets()
         {
             List<EditorPortInfo> portInfos = new List<EditorPortInfo>();
