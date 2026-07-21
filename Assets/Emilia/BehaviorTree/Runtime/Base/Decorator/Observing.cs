@@ -13,7 +13,7 @@ namespace Emilia.BehaviorTree
     public abstract class ObservingAsset<T> : BaseDecoratorAsset<T>, IObservingAsset where T : Node, new()
     {
         [LabelText("停止策略"), SerializeField]
-        private Stops _stops;
+        protected Stops _stops;
 
         public Stops stops => this._stops;
     }
@@ -31,11 +31,16 @@ namespace Emilia.BehaviorTree
 
         protected override void OnDispose()
         {
+            if (this.isObserving)
+            {
+                this.isObserving = false;
+                StopObserving();
+            }
+
             base.OnDispose();
             observingAsset = null;
-            isObserving = false;
         }
-
+        
         protected override void OnStart()
         {
             if (this.observingAsset.stops != Stops.None)
